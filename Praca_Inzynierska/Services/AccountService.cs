@@ -33,15 +33,14 @@ namespace Praca_Inzynierska.Services
             IMapper mapper,
             IConfiguration configuration,
             AppDbContext context,
-            IHttpContextAccessor httpContext)
-            
+            IHttpContextAccessor httpContext)      
+                        
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _mapper = mapper;
             _configuration = configuration;
             _context = context;
-            ;
 
             _userEmail = httpContext.HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)
                 ?.Value;
@@ -59,7 +58,6 @@ namespace Praca_Inzynierska.Services
 
                 return new AccountResponse(errors);
             }
-
             _context.SaveChanges();
 
             var appUser = _userManager.Users.SingleOrDefault(r => r.Email == model.Email);

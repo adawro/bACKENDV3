@@ -10,6 +10,7 @@ namespace Praca_Inzynierska.Models
     {
         public string Name { get; set; }
         public string Surname { get; set; }
-
+        public string Rola { get; set; }
     }
 }
+

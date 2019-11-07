@@ -12,5 +12,6 @@
         public string Password { get; set; }
         /// <example>hunter2</example>
         public string ConfirmPassword { get; set; }
+        
     }
 }

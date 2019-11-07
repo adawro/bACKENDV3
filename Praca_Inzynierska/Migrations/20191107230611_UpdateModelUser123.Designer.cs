@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Praca_Inzynierska.Persistence;
 
 namespace Praca_Inzynierska.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191107230611_UpdateModelUser123")]
+    partial class UpdateModelUser123
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -168,6 +170,8 @@ namespace Praca_Inzynierska.Migrations
 
                     b.Property<string>("Surname");
 
+                    b.Property<int>("TESTSTS");
+
                     b.Property<bool>("TwoFactorEnabled");
 
                     b.Property<string>("UserName")
@@ -190,39 +194,21 @@ namespace Praca_Inzynierska.Migrations
                         {
                             Id = "b01bex90-aa65-4af8-bd17-00bd9344e575",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "49694773-beac-41eb-bc4d-345132602169",
+                            ConcurrencyStamp = "247ceefc-5e2c-40ec-849c-00579f7c85d2",
                             Email = "test@test.test",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             Name = "Konto",
                             NormalizedEmail = "TEST@TEST.TEST",
                             NormalizedUserName = "TEST@TEST.TEST",
-                            PasswordHash = "AQAAAAEAACcQAAAAECqsbZLsyGCnrjSLB8pc6VS9CnL9MEiYB1E3f+dP+5Q8ZiJwuOC4GMwKhwUqqFboIg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEBNtlEacqRkl7vESwlxEG1vSx4+fxsoFbl1JRlnjVVHWfgh0kGggFK/cAQWTQwVIAA==",
                             PhoneNumberConfirmed = false,
                             Rola = "TEST",
                             SecurityStamp = "",
                             Surname = "Testowe",
+                            TESTSTS = 0,
                             TwoFactorEnabled = false,
                             UserName = "test@test.test"
-                        },
-                        new
-                        {
-                            Id = "a1df72a8-d756-44f4-bd9b-60817997704e",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "93e8273e-9898-4852-838d-85f24cd8446c",
-                            Email = "admin@admin.pl",
-                            EmailConfirmed = true,
-                            LockoutEnabled = false,
-                            Name = "Admin",
-                            NormalizedEmail = "ADMIN@ADMIN.PL",
-                            NormalizedUserName = "ADMIN@ADMIN.PL",
-                            PasswordHash = "AQAAAAEAACcQAAAAEPImPYC2Fphw9WnivjrYkzTEe/XQQqsT/igQuslyAsD2f2rOws7Uz6ZN1DfMsbALMw==",
-                            PhoneNumberConfirmed = false,
-                            Rola = "Admin",
-                            SecurityStamp = "",
-                            Surname = "Admin",
-                            TwoFactorEnabled = false,
-                            UserName = "admin@admin.pl"
                         });
                 });
 

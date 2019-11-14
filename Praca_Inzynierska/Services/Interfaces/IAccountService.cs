@@ -7,5 +7,6 @@ namespace Praca_Inzynierska.Services.Interfaces
     public interface IAccountService
     {
         Task<AccountResponse> RegisterAccountAsync(RegisterAccountDto model);
+        Task<AccountResponse> LoginAccountAsync(LoginAccountDto model);
     }
 }

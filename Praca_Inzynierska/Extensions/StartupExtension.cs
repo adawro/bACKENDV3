@@ -79,7 +79,7 @@ namespace Praca_Inzynierska.Extensions
                 {
                     options.InvalidModelStateResponseFactory = actionContext => new BadRequestObjectResult(actionContext.ModelState);
                 })
-                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<RegisterAccountDtoValidators>());
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<RegisterAccountDtoValidator>());
 
         }
         
@@ -114,6 +114,7 @@ namespace Praca_Inzynierska.Extensions
         {
             services.AddScoped<IAccountService, AccountService>();
             //services.AddScoped<IEmailService, EmailService>();
+            services.AddScoped<IActorService, ActorService>();
         }
     }
 }

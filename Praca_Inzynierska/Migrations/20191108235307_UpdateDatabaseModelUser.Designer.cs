@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Praca_Inzynierska.Persistence;
 
 namespace Praca_Inzynierska.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191108235307_UpdateDatabaseModelUser")]
+    partial class UpdateDatabaseModelUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -129,35 +131,6 @@ namespace Praca_Inzynierska.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("Praca_Inzynierska.Models.Actor", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("AccountCreate");
-
-                    b.Property<string>("ActorName");
-
-                    b.Property<int>("Age");
-
-                    b.Property<DateTime>("Born");
-
-                    b.Property<string>("CV");
-
-                    b.Property<string>("CityBorn");
-
-                    b.Property<string>("CountryBorn");
-
-                    b.Property<string>("Name");
-
-                    b.Property<string>("Surname");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Actors");
-                });
-
             modelBuilder.Entity("Praca_Inzynierska.Models.UserAccount", b =>
                 {
                     b.Property<string>("Id")
@@ -219,16 +192,15 @@ namespace Praca_Inzynierska.Migrations
                         {
                             Id = "b01bex90-aa65-4af8-bd17-00bd9344e575",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "34c23e3b-e68b-4308-82f8-4ada2b413770",
+                            ConcurrencyStamp = "03719819-6019-4aec-81e4-e5fb29163884",
                             Email = "test@test.test",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             Name = "Konto",
                             NormalizedEmail = "TEST@TEST.TEST",
                             NormalizedUserName = "TEST@TEST.TEST",
-                            PasswordHash = "AQAAAAEAACcQAAAAEBE7NGjW6LflUJEzmFReHnoVlz//xVZp0QirPmCHoTMadIN8LCOR4lGDEVsyElUOww==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEAbXfY6KJxGZNC2IZyMFgGe/AZs5t0HLNzXAdYGzxrpm1xgg4nqSzCRlPvTlXIumyw==",
                             PhoneNumberConfirmed = false,
-                            Rola = "test",
                             SecurityStamp = "",
                             Surname = "Testowe",
                             TwoFactorEnabled = false,
@@ -236,18 +208,17 @@ namespace Praca_Inzynierska.Migrations
                         },
                         new
                         {
-                            Id = "9697c362-903f-44e4-b286-68dbcd7b02b8",
+                            Id = "6ccd2a37-cdbc-457a-8519-bc8857bb45c7",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "6452232f-7196-4dac-a8f4-83e6d4e15f27",
+                            ConcurrencyStamp = "fb0a7399-2b93-4caf-803e-b204240bfdd6",
                             Email = "admin@admin.pl",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             Name = "Admin",
                             NormalizedEmail = "ADMIN@ADMIN.PL",
                             NormalizedUserName = "ADMIN@ADMIN.PL",
-                            PasswordHash = "AQAAAAEAACcQAAAAEHpZIMAAAHmHDu1iQ6hRv3xVqHmoDgiy4vK2Xf0ikdHuayRndQzJqsWEZep8Z/J5Ow==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEOrmSPEX2RkCU6HWEPl8FJUz9yH+noALK/GXC+3mThmQawBhh6CylNjxS0OkrlYo9w==",
                             PhoneNumberConfirmed = false,
-                            Rola = "admin",
                             SecurityStamp = "",
                             Surname = "Admin",
                             TwoFactorEnabled = false,

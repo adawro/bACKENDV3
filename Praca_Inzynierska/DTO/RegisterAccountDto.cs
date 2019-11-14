@@ -2,6 +2,7 @@
 {
     public class RegisterAccountDto
     {
+        public string UserName { get; set; }
         /// <example>Swiety</example>
         public string Name { get; set; }
         /// <example>Mikolaj</example>

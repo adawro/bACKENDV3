@@ -15,7 +15,8 @@ namespace Praca_Inzynierska.Persistence
         }
 
         public DbSet<UserAccount> UserAccounts { get; set; }
-        
+        public DbSet<Actor> Actors { get; set; }
+
         #region Role i testowy uzytkownik
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -27,7 +28,7 @@ namespace Praca_Inzynierska.Persistence
             builder.Entity<UserAccount>().HasData(new UserAccount
             {
                 Id = testAccountId,
-                UserName = "test@test.test",
+                UserName = "test",
                 NormalizedUserName = "TEST@TEST.TEST",
                 Email = "test@test.test",
                 NormalizedEmail = "TEST@TEST.TEST",
@@ -36,7 +37,7 @@ namespace Praca_Inzynierska.Persistence
                 SecurityStamp = string.Empty,
                 Name = "Konto",
                 Surname = "Testowe",
-                Rola = "TEST"
+                Rola = "test"
             });
 
             builder.Entity<UserAccount>().HasData(new UserAccount
@@ -50,7 +51,7 @@ namespace Praca_Inzynierska.Persistence
                 SecurityStamp = string.Empty,
                 Name = "Admin",
                 Surname = "Admin",
-                Rola = "Admin"
+                Rola = "admin"
             });
         }
 

@@ -41,5 +41,24 @@ namespace Praca_Inzynierska.Controllers
 
             return Ok(result.Token);
         }
+        /// <summary>
+        ///     Potwierdza dane logowania uzytkownika i zwraca json web token.
+        /// </summary>
+        /// <returns>Obiekt json z tokenem jwt</returns>
+        /// <response code="200">
+        ///     JWT - jesli uzytkownik zostal potwierdzony
+        /// </response>
+        /// <response code="400">Jesli sa jakies bledy w formularzu lub nie udalo sie zalogowac</response>
+        [ProducesResponseType(typeof(JwtTokenDto), 200)]
+        [ProducesResponseType(typeof(IDictionary<string, string[]>), 400)]
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginAccountDto model)
+        {
+            var result = await _accountService.LoginAccountAsync(model);
+
+            if (!result.Success) return BadRequest(result.Message);
+
+            return Ok(result.Token);
+        }
     }
 }

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Praca_Inzynierska.Persistence;
 
 namespace Praca_Inzynierska.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191109015029_UpdateModelActor")]
+    partial class UpdateModelActor
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -137,8 +139,6 @@ namespace Praca_Inzynierska.Migrations
 
                     b.Property<string>("AccountCreate");
 
-                    b.Property<string>("ActorName");
-
                     b.Property<int>("Age");
 
                     b.Property<DateTime>("Born");
@@ -219,14 +219,14 @@ namespace Praca_Inzynierska.Migrations
                         {
                             Id = "b01bex90-aa65-4af8-bd17-00bd9344e575",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "34c23e3b-e68b-4308-82f8-4ada2b413770",
+                            ConcurrencyStamp = "4c7bda09-56f7-40e1-a8cb-e2a71c55d61d",
                             Email = "test@test.test",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             Name = "Konto",
                             NormalizedEmail = "TEST@TEST.TEST",
                             NormalizedUserName = "TEST@TEST.TEST",
-                            PasswordHash = "AQAAAAEAACcQAAAAEBE7NGjW6LflUJEzmFReHnoVlz//xVZp0QirPmCHoTMadIN8LCOR4lGDEVsyElUOww==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEOmGGd4c5dlBB8TCqfiwcgdYQdUocobgAIw9JNRtZNf9FbHGK5HeNOvOH/zey4k+vA==",
                             PhoneNumberConfirmed = false,
                             Rola = "test",
                             SecurityStamp = "",
@@ -236,16 +236,16 @@ namespace Praca_Inzynierska.Migrations
                         },
                         new
                         {
-                            Id = "9697c362-903f-44e4-b286-68dbcd7b02b8",
+                            Id = "9565d441-63c3-4d96-bee0-fcc5c87392df",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "6452232f-7196-4dac-a8f4-83e6d4e15f27",
+                            ConcurrencyStamp = "1ea4bc25-96b7-4638-9c6d-0b5fd7f50508",
                             Email = "admin@admin.pl",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             Name = "Admin",
                             NormalizedEmail = "ADMIN@ADMIN.PL",
                             NormalizedUserName = "ADMIN@ADMIN.PL",
-                            PasswordHash = "AQAAAAEAACcQAAAAEHpZIMAAAHmHDu1iQ6hRv3xVqHmoDgiy4vK2Xf0ikdHuayRndQzJqsWEZep8Z/J5Ow==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEMzGCrZJgzwtkxBohqqKl8CyC/XiEnStlx7lbQfsujGKOAwzDTjKM8Y1CNqD7C274Q==",
                             PhoneNumberConfirmed = false,
                             Rola = "admin",
                             SecurityStamp = "",

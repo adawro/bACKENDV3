@@ -6,13 +6,6 @@ namespace Praca_Inzynierska.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.UpdateData(
-                table: "AspNetUsers",
-                keyColumn: "Id",
-                keyValue: "b01bex90-aa65-4af8-bd17-00bd9344e575",
-                columns: new[] { "ConcurrencyStamp", "Name", "PasswordHash" },
-                values: new object[] { "49694773-beac-41eb-bc4d-345132602169", "Konto", "AQAAAAEAACcQAAAAECqsbZLsyGCnrjSLB8pc6VS9CnL9MEiYB1E3f+dP+5Q8ZiJwuOC4GMwKhwUqqFboIg==" });
-
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "Rola", "SecurityStamp", "Surname", "TwoFactorEnabled", "UserName" },
@@ -21,17 +14,7 @@ namespace Praca_Inzynierska.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DeleteData(
-                table: "AspNetUsers",
-                keyColumn: "Id",
-                keyValue: "a1df72a8-d756-44f4-bd9b-60817997704e");
-
-            migrationBuilder.UpdateData(
-                table: "AspNetUsers",
-                keyColumn: "Id",
-                keyValue: "b01bex90-aa65-4af8-bd17-00bd9344e575",
-                columns: new[] { "ConcurrencyStamp", "Name", "PasswordHash" },
-                values: new object[] { "e97bb1bf-bf8a-4d09-8139-d3c99d131aef", "Kontoooooooooooo", "AQAAAAEAACcQAAAAEGSwMyFwXFto2dN2tMtGxVttwX4hSslELA/QdVTcLps6lSaX4OozAFtxya21cmUdBg==" });
+            
         }
     }
 }

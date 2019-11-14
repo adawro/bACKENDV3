@@ -50,17 +50,37 @@ namespace Praca_Inzynierska.Services
         {
             var errors = new Dictionary<string, string[]>();
             var user = _mapper.Map<RegisterAccountDto, UserAccount>(model);
-
             var result = await _userManager.CreateAsync(user, model.Password);
+            var rola = "user";
+            user.Rola = rola;
             if (!result.Succeeded)
             {
                 foreach (var error in result.Errors) errors.Add(error.Code, new[] { error.Description });
 
                 return new AccountResponse(errors);
             }
+
             _context.SaveChanges();
 
             var appUser = _userManager.Users.SingleOrDefault(r => r.Email == model.Email);
+            var response = new JwtTokenDto
+            {
+                Token = GenerateJwtToken(model.Email, appUser)
+            };
+            return new AccountResponse(response);
+        }
+        public async Task<AccountResponse> LoginAccountAsync(LoginAccountDto model)
+        {
+            var errors = new Dictionary<string, string[]>();
+
+            var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, false, false);
+            if (!result.Succeeded)
+            {
+                errors.Add("Konto", new[] { "Nie udalo sie zalogowac" });
+                return new AccountResponse(errors);
+            }
+
+            var appUser = _userManager.Users.SingleOrDefault(r => r.UserName == model.Email);
             var response = new JwtTokenDto
             {
                 Token = GenerateJwtToken(model.Email, appUser)
@@ -75,8 +95,6 @@ namespace Praca_Inzynierska.Services
                 new Claim(JwtRegisteredClaimNames.Sub, email),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(ClaimTypes.NameIdentifier, user.Id),
-                new Claim(JwtRegisteredClaimNames.GivenName, user.Name),
-                new Claim(JwtRegisteredClaimNames.FamilyName, user.Surname)
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtKey"]));

@@ -12,11 +12,14 @@ namespace Praca_Inzynierska.Mapping
         {
             CreateMap<RegisterAccountDto, UserAccount>();
             CreateMap<ActorSaveDto, Actor>()
-                .ForMember(dest => dest.ActorName, opt => opt.MapFrom(src => src.Name.ToLower() + src.Surname.ToLower()));
+                .ForMember(dest => dest.ActorName, opt => opt.MapFrom(src => src.Name.ToUpper() + " " + src.Surname.ToUpper()))
+                .ForMember(dest => dest.ActorSurname, opt => opt.MapFrom(src => src.Surname.ToUpper() + " " + src.Name.ToUpper()));
             CreateMap<Actor, ActorReturnDto>();
             CreateMap<ActorListReturnDto, Actor>();
             CreateMap<Actor, ActorListReturnDto>();
-            CreateMap<ActorEditDto, Actor>();
+            CreateMap<ActorEditDto, Actor>()
+                .ForMember(dest => dest.ActorName, opt => opt.MapFrom(src => src.Name.ToUpper() + " " + src.Surname.ToUpper()))
+                .ForMember(dest => dest.ActorSurname, opt => opt.MapFrom(src => src.Surname.ToUpper() + " " + src.Name.ToUpper()));
         }
     }
 }

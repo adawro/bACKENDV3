@@ -41,6 +41,7 @@ namespace Praca_Inzynierska.Controllers
 
             return Ok(result.Token);
         }
+
         /// <summary>
         ///     Potwierdza dane logowania uzytkownika i zwraca json web token.
         /// </summary>
@@ -55,6 +56,87 @@ namespace Praca_Inzynierska.Controllers
         public async Task<IActionResult> Login([FromBody] LoginAccountDto model)
         {
             var result = await _accountService.LoginAccountAsync(model);
+
+            if (!result.Success) return BadRequest(result.Message);
+
+            return Ok(result.Token);
+        }
+
+        /// <summary>
+        ///     Edytujemy istniejące konto Imie i nazwisko
+        /// </summary>
+        /// <returns>
+        ///     Obiekt json z tokenem jwt
+        ///     uzytkownika pobiermy po tokenie ktory jest tworzony przy rejestracji
+        ///     po porawnej zmianie imienia i nazwiska jest tworzony nowy token
+        ///     FIRSTNAME = IMIE
+        ///     LASTNAME = NAZWIKO
+        /// </returns>
+        /// <response code="200">
+        ///     JWT - jesli udalo sie zmienic imie lub nazwisko
+        /// </response>
+        /// <response code="400">Jesli sa jakies bledy w formularzu lub email nie istanije albo edytuje nie swoje konto </response>
+        [ProducesResponseType(typeof(JwtTokenDto), 200)]
+        [ProducesResponseType(typeof(IDictionary<string, string[]>), 400)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [HttpPut("edit/PersonalData")]
+        public IActionResult EditAccount([FromBody] AccountEditNameSurnameDto model)
+        {
+            var result = _accountService.EditNameSurname(model);
+
+            if (!result.Success) return BadRequest(result.Message);
+
+            return Ok(result.Token);
+        }
+
+        /// <summary>
+        ///     Edytujemy istniejące konto Imie i nazwisko
+        /// </summary>
+        /// <returns>
+        ///     Obiekt json z tokenem jwt
+        ///     uzytkownika pobiermy po tokenie ktory jest tworzony przy rejestracji
+        ///     po porawnej zmianie imienia i nazwiska jest tworzony nowy token
+        ///     FIRSTNAME = IMIE
+        ///     LASTNAME = NAZWIKO
+        /// </returns>
+        /// <response code="200">
+        ///     JWT - jesli udalo sie zmienic imie lub nazwisko
+        /// </response>
+        /// <response code="400">Jesli sa jakies bledy w formularzu lub email nie istanije albo edytuje nie swoje konto </response>
+        [ProducesResponseType(typeof(JwtTokenDto), 200)]
+        [ProducesResponseType(typeof(IDictionary<string, string[]>), 400)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [HttpPut("edit/UserName")]
+        public IActionResult EditUserName([FromBody] AccountUserNameEditDto model)
+        {
+            var result = _accountService.EditUserName(model);
+
+            if (!result.Success) return BadRequest(result.Message);
+
+            return Ok(result.Token);
+        }
+
+        /// <summary>
+        ///     Zmiana email zalogowanego uzytkownika
+        /// </summary>
+        /// <returns>
+        ///     Obiekt json z tokenem jwt
+        ///     uzytkownika pobiermy po tokenie ktory jest tworzony przy rejestracji
+        ///     po porawnej zmianie emila jest tworzony nowy token
+        ///     PASSWORD  - STARE HASLO
+        ///     email - nowy emial
+        /// </returns>
+        /// <response code="200">
+        ///     JWT - jesli udalo sie zmienic emial
+        /// </response>
+        /// <response code="400">Jesli sa jakies bledy w formularzu lub email nie istanije albo edytuje nie swoje konto </response>
+        [ProducesResponseType(typeof(JwtTokenDto), 200)]
+        [ProducesResponseType(typeof(IDictionary<string, string[]>), 400)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [HttpPut("EditEmail")]
+        public async Task<IActionResult> EditAccountEmail([FromBody] AccountEditEmailDto emailDto)
+        {
+            var result = await _accountService.EditEmail(emailDto);
 
             if (!result.Success) return BadRequest(result.Message);
 

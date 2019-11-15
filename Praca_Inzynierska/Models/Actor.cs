@@ -15,5 +15,7 @@ namespace Praca_Inzynierska.Models
         public string CountryBorn { get; set; }
         public string AccountCreate { get; set; }
         public string ActorName { get; set; }
+        public string ActorSurname { get; set; }
     }
 }
+

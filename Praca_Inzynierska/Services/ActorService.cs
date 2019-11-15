@@ -141,14 +141,13 @@ namespace Praca_Inzynierska.Services
                 errors.Add("User", new[] { "Podane konto nie istnieje" });
                 return new ActorListResponse(errors);
             }
-
+            
             foreach (var e in _context.Actors)
             {
-                if (e.ActorName.Contains(findActor.ActorName.ToLower()))
+                if (e.ActorName.Contains(findActor.ActorName.ToUpper()) || e.ActorSurname.Contains(findActor.ActorName.ToUpper()))
                 {
                     actors.Add(_mapper.Map<Actor, ActorReturnDto>(e));
                 }
-                    
             }
 
             if(actors==null)
@@ -157,7 +156,7 @@ namespace Praca_Inzynierska.Services
                 return new ActorListResponse(errors);
             }
 
-            var result = new ActorListReturnDto
+            ActorListReturnDto result = new ActorListReturnDto
             {
                 ActorList = actors
             };

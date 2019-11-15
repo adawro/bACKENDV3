@@ -3,7 +3,7 @@
     public class LoginAccountDto
     {
             /// <example>jakis@poprawny.email</example>
-            public string Email { get; set; }
+            public string UserName { get; set; }
             /// <example>hunter2</example>
             public string Password { get; set; }
     }

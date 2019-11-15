@@ -48,10 +48,14 @@ namespace Praca_Inzynierska.Services
 
         public async Task<AccountResponse> RegisterAccountAsync(RegisterAccountDto model)
         {
-            var errors = new Dictionary<string, string[]>();
-            var user = _mapper.Map<RegisterAccountDto, UserAccount>(model);
+            Dictionary<string, string[]> errors = new Dictionary<string, string[]>();
+
+            UserAccount user = _mapper.Map<RegisterAccountDto, UserAccount>(model);
+
             var result = await _userManager.CreateAsync(user, model.Password);
-            var rola = "user";
+
+            string rola = "user";
+
             user.Rola = rola;
             if (!result.Succeeded)
             {
@@ -62,8 +66,8 @@ namespace Praca_Inzynierska.Services
 
             _context.SaveChanges();
 
-            var appUser = _userManager.Users.SingleOrDefault(r => r.Email == model.Email);
-            var response = new JwtTokenDto
+            UserAccount appUser = _userManager.Users.SingleOrDefault(r => r.Email == model.Email);
+            JwtTokenDto response = new JwtTokenDto
             {
                 Token = GenerateJwtToken(model.Email, appUser)
             };
@@ -71,26 +75,26 @@ namespace Praca_Inzynierska.Services
         }
         public async Task<AccountResponse> LoginAccountAsync(LoginAccountDto model)
         {
-            var errors = new Dictionary<string, string[]>();
+            Dictionary<string, string[]> errors = new Dictionary<string, string[]>();
 
-            var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, false, false);
+            var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, false, false);
             if (!result.Succeeded)
             {
                 errors.Add("Konto", new[] { "Nie udalo sie zalogowac" });
                 return new AccountResponse(errors);
             }
 
-            var appUser = _userManager.Users.SingleOrDefault(r => r.UserName == model.Email);
-            var response = new JwtTokenDto
+            UserAccount appUser = _userManager.Users.SingleOrDefault(r => r.UserName == model.UserName);
+            JwtTokenDto response = new JwtTokenDto
             {
-                Token = GenerateJwtToken(model.Email, appUser)
+                Token = GenerateJwtToken(model.UserName, appUser)
             };
 
             return new AccountResponse(response);
         }
         private string GenerateJwtToken(string email, UserAccount user)
         {
-            var claims = new List<Claim>
+            List<Claim> claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Sub, email),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
@@ -99,9 +103,9 @@ namespace Praca_Inzynierska.Services
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtKey"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-            var expires = DateTime.Now.AddDays(Convert.ToDouble(_configuration["JwtExpireDays"]));
+            DateTime expires = DateTime.Now.AddDays(Convert.ToDouble(_configuration["JwtExpireDays"]));
 
-            var token = new JwtSecurityToken(
+            JwtSecurityToken token = new JwtSecurityToken(
                 _configuration["JwtIssuer"],
                 _configuration["JwtIssuer"],
                 claims,
@@ -110,6 +114,147 @@ namespace Praca_Inzynierska.Services
             );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        public AccountResponse EditNameSurname(AccountEditNameSurnameDto model)
+        {
+            Dictionary<string, string[]> errors = new Dictionary<string, string[]>();
+
+            UserAccount user = _context.UserAccounts.AsNoTracking().FirstOrDefault(u => u.Email == _userEmail);
+            if (user == null)
+            {
+                errors.Add("User", new[] { "Podane konto nie istnieje" });
+                return new AccountResponse(errors);
+            }
+            user.Surname = model.Surname;
+            user.Name = model.Name;
+
+            try
+            {
+                _context.UserAccounts.Update(user);
+                _context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                errors.Add("Wystąpił nieoczekiwany błąd", new[] { ex.Message });
+                return new AccountResponse(errors);
+            }
+
+            JwtTokenDto response = new JwtTokenDto
+            {
+                Token = GenerateJwtToken(user.Email, user)
+            };
+            return new AccountResponse(response);
+        }
+
+        public AccountResponse EditUserName(AccountUserNameEditDto model)
+        {
+            Dictionary<string, string[]> errors = new Dictionary<string, string[]>();
+
+            UserAccount user = _context.UserAccounts.AsNoTracking().FirstOrDefault(u => u.Email == _userEmail);
+            if (user == null)
+            {
+                errors.Add("User", new[] { "Podane konto nie istnieje" });
+                return new AccountResponse(errors);
+            }
+            user.UserName = model.UserName;
+            user.NormalizedUserName = model.UserName.ToUpper();
+
+            try
+            {
+                _context.UserAccounts.Update(user);
+                _context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                errors.Add("Wystąpił nieoczekiwany błąd", new[] { ex.Message });
+                return new AccountResponse(errors);
+            }
+
+            var response = new JwtTokenDto
+            {
+                Token = GenerateJwtToken(user.Email, user)
+            };
+            return new AccountResponse(response);
+        }
+
+        public async Task<AccountResponse> ChangePassword(AccountEditPasswordDto passwordDto)
+        {
+            Dictionary<string, string[]> errors = new Dictionary<string, string[]>();
+
+            UserAccount user = _context.UserAccounts.AsNoTracking().FirstOrDefault(u => u.Email == _userEmail);
+            if (user == null)
+            {
+                errors.Add("User", new[] { "Podane konto nie istnieje" });
+                return new AccountResponse(errors);
+            }
+
+            var signInResult = await _signInManager.CheckPasswordSignInAsync(user, passwordDto.OldPassword, false);
+            if (!signInResult.Succeeded)
+            {
+                errors.Add("Hasło", new[] { "Podałeś zle haslo" });
+                return new AccountResponse(errors);
+            }
+
+            var changeResult = await _userManager.ChangePasswordAsync(await _userManager.FindByIdAsync(user.Id),
+                                    passwordDto.OldPassword, passwordDto.NewPassword);
+
+            if (!changeResult.Succeeded)
+            {
+                errors.Add("Hasło", new[] { changeResult.ToString() });
+                return new AccountResponse(errors);
+            }
+
+            JwtTokenDto response = new JwtTokenDto
+            {
+                Token = GenerateJwtToken(user.Email, user)
+            };
+            return new AccountResponse(response);
+        }
+        public async Task<AccountResponse> EditEmail(AccountEditEmailDto emailDto)
+        {
+            Dictionary<string, string[]> errors = new Dictionary<string, string[]>();
+
+            UserAccount user = _context.UserAccounts.AsNoTracking().FirstOrDefault(u => u.Email == _userEmail);
+            if (user == null)
+            {
+                errors.Add("User", new[] { "Podane konto nie istnieje" });
+                return new AccountResponse(errors);
+            }
+
+            var result = await _signInManager.CheckPasswordSignInAsync(user, emailDto.Password, false);
+            if (!result.Succeeded)
+            {
+                errors.Add("Hasło", new[] { "Podałeś zle haslo" });
+                return new AccountResponse(errors);
+            }
+
+            UserAccount doExistEmail = await _context.UserAccounts.AsNoTracking().FirstOrDefaultAsync(u => u.Email == emailDto.Email);
+            if (doExistEmail != null)
+            {
+                errors.Add("Email", new[] { "Podałeś zajety Email" });
+                return new AccountResponse(errors);
+            }
+
+            try
+            {
+                user.Email = emailDto.Email;
+                user.NormalizedEmail = emailDto.Email.ToUpper();
+                _context.UserAccounts.Update(user);
+                _context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                errors.Add("Wystąpił nieoczekiwany błąd", new[] { ex.Message });
+                return new AccountResponse(errors);
+            }
+
+            JwtTokenDto response = new JwtTokenDto
+            {
+                Token = GenerateJwtToken(user.Email, user)
+            };
+
+            return new AccountResponse(response);
         }
     }
 }

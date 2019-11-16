@@ -10,8 +10,8 @@ using Praca_Inzynierska.Persistence;
 namespace Praca_Inzynierska.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20191109001043_AddModelActor")]
-    partial class AddModelActor
+    [Migration("20191116211849_AdminSeedUserName")]
+    partial class AdminSeedUserName
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -131,6 +131,50 @@ namespace Praca_Inzynierska.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("Praca_Inzynierska.Models.Actor", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("AccountCreate");
+
+                    b.Property<string>("ActorName");
+
+                    b.Property<string>("ActorSurname");
+
+                    b.Property<int>("Age");
+
+                    b.Property<DateTime>("Born");
+
+                    b.Property<string>("CV");
+
+                    b.Property<string>("CityBorn");
+
+                    b.Property<string>("CountryBorn");
+
+                    b.Property<string>("Name");
+
+                    b.Property<string>("Surname");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Actors");
+                });
+
+            modelBuilder.Entity("Praca_Inzynierska.Models.Type", b =>
+                {
+                    b.Property<int>("TypeId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("TypeId");
+
+                    b.ToTable("Types");
+                });
+
             modelBuilder.Entity("Praca_Inzynierska.Models.UserAccount", b =>
                 {
                     b.Property<string>("Id")
@@ -190,41 +234,22 @@ namespace Praca_Inzynierska.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "b01bex90-aa65-4af8-bd17-00bd9344e575",
+                            Id = "b01bex90-aa65-4af8-bd17-00bd9344e789",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "00fad311-55a0-4ae8-a3e5-50804ae54d57",
-                            Email = "test@test.test",
-                            EmailConfirmed = true,
-                            LockoutEnabled = false,
-                            Name = "Konto",
-                            NormalizedEmail = "TEST@TEST.TEST",
-                            NormalizedUserName = "TEST@TEST.TEST",
-                            PasswordHash = "AQAAAAEAACcQAAAAEPCJzrhavwOzE9kPemP3i0Q559KsEdWufWLFoIrqcH/anmYdku+RnSH1aXqY0diSDw==",
-                            PhoneNumberConfirmed = false,
-                            Rola = "test",
-                            SecurityStamp = "",
-                            Surname = "Testowe",
-                            TwoFactorEnabled = false,
-                            UserName = "test"
-                        },
-                        new
-                        {
-                            Id = "86e5e709-5845-45b1-bf82-77587dbf091e",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "68d4f970-9950-4b1e-922c-1e62e87bbfdc",
+                            ConcurrencyStamp = "0bdf4986-ac94-41fb-86cf-0932070e5a9c",
                             Email = "admin@admin.pl",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
-                            Name = "Admin",
+                            Name = "Konto",
                             NormalizedEmail = "ADMIN@ADMIN.PL",
-                            NormalizedUserName = "ADMIN@ADMIN.PL",
-                            PasswordHash = "AQAAAAEAACcQAAAAEGu0t4JU8zkc3N9OXUG7fCa+hnqEh+ql/LG9UNxxO1osdErXXOPtGnUAesnw+tN1Mw==",
+                            NormalizedUserName = "KONTOADMINA",
+                            PasswordHash = "AQAAAAEAACcQAAAAEF3t+1JfWju2TQdrr04i0m25+pMMWz2q8L7oXm4dKIfwD2ZS2iiHCWDwdVOz/8+DXA==",
                             PhoneNumberConfirmed = false,
                             Rola = "admin",
                             SecurityStamp = "",
                             Surname = "Admin",
                             TwoFactorEnabled = false,
-                            UserName = "admin@admin.pl"
+                            UserName = "KontoAdmina"
                         });
                 });
 

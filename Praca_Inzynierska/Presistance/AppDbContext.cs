@@ -22,13 +22,13 @@ namespace Praca_Inzynierska.Persistence
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            //const string adminAccountId = "b01bex90-aa65-4af8-bd17-00bd9344e1111";
+            //const string adminID = "b01bex90-aa65-4af8-bd17-00bd9344e789";
             //var hasher = new PasswordHasher<UserAccount>();
             //builder.Entity<UserAccount>().HasData(new UserAccount
             //{
-            //    Id = adminAccountId,
+            //    Id = adminID,
             //    UserName = "KontoAdmina",
-            //    NormalizedUserName = "ADMIN@ADMIN.PL",
+            //    NormalizedUserName = "KONTOADMINA",
             //    Email = "admin@admin.pl",
             //    NormalizedEmail = "ADMIN@ADMIN.PL",
             //    EmailConfirmed = true,
@@ -38,23 +38,6 @@ namespace Praca_Inzynierska.Persistence
             //    Surname = "Admin",
             //    Rola = "admin"
             //});
-
-            const string adminID = "b01bex90-aa65-4af8-bd17-00bd9344e789";
-            var hasher = new PasswordHasher<UserAccount>();
-            builder.Entity<UserAccount>().HasData(new UserAccount
-            {
-                Id = adminID,
-                UserName = "KontoAdmina",
-                NormalizedUserName = "KONTOADMINA",
-                Email = "admin@admin.pl",
-                NormalizedEmail = "ADMIN@ADMIN.PL",
-                EmailConfirmed = true,
-                PasswordHash = hasher.HashPassword(null, "admin123"),
-                SecurityStamp = string.Empty,
-                Name = "Konto",
-                Surname = "Admin",
-                Rola = "admin"
-            });
 
 
             //    List<Models.Type> TyprList = new List<Models.Type>()

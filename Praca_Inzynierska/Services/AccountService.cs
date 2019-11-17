@@ -25,7 +25,7 @@ namespace Praca_Inzynierska.Services
         private readonly AppDbContext _context;
         private readonly IMapper _mapper;
         private readonly SignInManager<UserAccount> _signInManager;
-        private readonly string _userEmail;
+        private readonly string _userName;
         private readonly UserManager<UserAccount> _userManager;
 
         public AccountService(SignInManager<UserAccount> signInManager,
@@ -42,7 +42,7 @@ namespace Praca_Inzynierska.Services
             _configuration = configuration;
             _context = context;
 
-            _userEmail = httpContext.HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)
+            _userName = httpContext.HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)
                 ?.Value;
         }
 
@@ -120,7 +120,7 @@ namespace Praca_Inzynierska.Services
         {
             Dictionary<string, string[]> errors = new Dictionary<string, string[]>();
 
-            UserAccount user = _context.UserAccounts.AsNoTracking().FirstOrDefault(u => u.Email == _userEmail);
+            UserAccount user = _context.UserAccounts.AsNoTracking().FirstOrDefault(u => u.UserName == _userName);
             if (user == null)
             {
                 errors.Add("User", new[] { "Podane konto nie istnieje" });
@@ -151,7 +151,7 @@ namespace Praca_Inzynierska.Services
         {
             Dictionary<string, string[]> errors = new Dictionary<string, string[]>();
 
-            UserAccount user = _context.UserAccounts.AsNoTracking().FirstOrDefault(u => u.Email == _userEmail);
+            UserAccount user = _context.UserAccounts.AsNoTracking().FirstOrDefault(u => u.UserName == _userName);
             if (user == null)
             {
                 errors.Add("User", new[] { "Podane konto nie istnieje" });
@@ -182,7 +182,7 @@ namespace Praca_Inzynierska.Services
         {
             Dictionary<string, string[]> errors = new Dictionary<string, string[]>();
 
-            UserAccount user = _context.UserAccounts.AsNoTracking().FirstOrDefault(u => u.Email == _userEmail);
+            UserAccount user = _context.UserAccounts.AsNoTracking().FirstOrDefault(u => u.UserName == _userName);
             if (user == null)
             {
                 errors.Add("User", new[] { "Podane konto nie istnieje" });
@@ -215,7 +215,7 @@ namespace Praca_Inzynierska.Services
         {
             Dictionary<string, string[]> errors = new Dictionary<string, string[]>();
 
-            UserAccount user = _context.UserAccounts.AsNoTracking().FirstOrDefault(u => u.Email == _userEmail);
+            UserAccount user = _context.UserAccounts.AsNoTracking().FirstOrDefault(u => u.UserName == _userName);
             if (user == null)
             {
                 errors.Add("User", new[] { "Podane konto nie istnieje" });

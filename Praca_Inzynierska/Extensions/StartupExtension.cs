@@ -115,6 +115,7 @@ namespace Praca_Inzynierska.Extensions
             services.AddScoped<IAccountService, AccountService>();
             //services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IActorService, ActorService>();
+            services.AddScoped<IMovieService, MovieService>();
         }
     }
 }

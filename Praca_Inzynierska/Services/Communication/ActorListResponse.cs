@@ -23,6 +23,6 @@ namespace Praca_Inzynierska.Services.Communication
         public ActorListResponse(Dictionary<string, string[]> message)
             : this(false, message, null)
         {
-        }
+        }   
     }
 }

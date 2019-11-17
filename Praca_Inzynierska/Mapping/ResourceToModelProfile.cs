@@ -20,6 +20,10 @@ namespace Praca_Inzynierska.Mapping
             CreateMap<ActorEditDto, Actor>()
                 .ForMember(dest => dest.ActorName, opt => opt.MapFrom(src => src.Name.ToUpper() + " " + src.Surname.ToUpper()))
                 .ForMember(dest => dest.ActorSurname, opt => opt.MapFrom(src => src.Surname.ToUpper() + " " + src.Name.ToUpper()));
+            CreateMap<MovieSaveDto, Movie>()
+                .ForMember(x => x.Actors, opt => opt.Ignore());
+            CreateMap<Movie, MovieReturnDto>()
+                .ForMember(x => x.Actors, opt => opt.Ignore());
         }
     }
 }

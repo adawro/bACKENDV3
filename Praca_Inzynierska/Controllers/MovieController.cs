@@ -1,0 +1,51 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Praca_Inzynierska.DTO.ReturnDto;
+using Praca_Inzynierska.Services.Interfaces;
+using Praca_Inzynierska.DTO;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+
+namespace Praca_Inzynierska.Controllers
+{
+    [Produces("application/json")]
+    [Consumes("application/json")]
+    [Route("api/[controller]")]
+    [ApiController]
+    public class MovieController : ControllerBase
+    {
+        private readonly IMovieService _movieService;
+
+        public MovieController(IMovieService movieService)
+        {
+            _movieService = movieService;
+        }
+        /// <summary>
+        ///     Dodaje nowy film do bazy
+        /// </summary>
+        /// <returns>Dane utworzonego filmu</returns>
+        /// <response code="200">
+        ///     Szczegolowe dane utworzonego filmu
+        /// </response>
+        /// <response code="400">
+        ///     Jesli sa jakies bledy w formularzu lub z jakiegos powodu
+        ///     nie udalo sie dodac ogloszenia (np. bledny uzytkownik, nie istniejaca kategoria)
+        /// </response>
+        [ProducesResponseType(typeof(MovieReturnDto), 200)]
+        [ProducesResponseType(typeof(IDictionary<string, string[]>), 400)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [HttpPost]
+        public IActionResult AddMovie([FromBody] MovieSaveDto movie)
+        {
+            var result = _movieService.AddMovie(movie);
+
+            if (!result.Success) return BadRequest(result.Message);
+
+            return Ok(result.Movie);
+        }
+    }
+}

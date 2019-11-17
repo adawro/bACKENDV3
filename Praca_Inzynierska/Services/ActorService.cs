@@ -24,27 +24,25 @@ namespace Praca_Inzynierska.Services
     {
         private readonly AppDbContext _context;
         private readonly IMapper _mapper;
-        private readonly string _userEmail;
+        private readonly string _userName;
 
         public ActorService(IMapper mapper, IHttpContextAccessor httpContext, AppDbContext context)
         {
             _mapper = mapper;
             _context = context;
-            _userEmail = httpContext.HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)
+            _userName = httpContext.HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)
                 ?.Value;
         }
         public ActorResponse AddActor(ActorSaveDto actorSave)
         {
             Dictionary<string, string[]> errors = new Dictionary<string, string[]>();
 
-            DateTime data = DateTime.Now;
-
-            if(actorSave.Born > data)
+            if(actorSave.Born > DateTime.Now)
             {
                 errors.Add("Data", new[] { "Podana data jest nieprawidłowa" });
                 return new ActorResponse(errors);
             }
-            UserAccount user = _context.UserAccounts.FirstOrDefault(u => u.Email == _userEmail);
+            UserAccount user = _context.UserAccounts.FirstOrDefault(u => u.UserName == _userName);
             if (user == null)
             {
                 errors.Add("User", new[] { "Podane konto nie istnieje" });
@@ -88,7 +86,7 @@ namespace Praca_Inzynierska.Services
                 return new ActorResponse(errors);
             }
 
-            UserAccount user = _context.UserAccounts.FirstOrDefault(u => u.Email == _userEmail);
+            UserAccount user = _context.UserAccounts.FirstOrDefault(u => u.UserName == _userName);
             if (user == null)
             {
                 errors.Add("User", new[] { "Podane konto nie istnieje" });
@@ -135,7 +133,7 @@ namespace Praca_Inzynierska.Services
 
 
             List<ActorReturnDto> actors = new List<ActorReturnDto>();
-            UserAccount user = _context.UserAccounts.FirstOrDefault(u => u.Email == _userEmail);
+            UserAccount user = _context.UserAccounts.FirstOrDefault(u => u.UserName == _userName);
             if (user == null)
             {
                 errors.Add("User", new[] { "Podane konto nie istnieje" });

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Praca_Inzynierska.Persistence;
 
 namespace Praca_Inzynierska.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191116225345_AddNewTable")]
+    partial class AddNewTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -151,11 +153,15 @@ namespace Praca_Inzynierska.Migrations
 
                     b.Property<string>("CountryBorn");
 
+                    b.Property<int?>("MovieId");
+
                     b.Property<string>("Name");
 
                     b.Property<string>("Surname");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("MovieId");
 
                     b.ToTable("Actors");
                 });
@@ -178,7 +184,7 @@ namespace Praca_Inzynierska.Migrations
 
                     b.Property<string>("Title");
 
-                    b.Property<int>("TypeId");
+                    b.Property<int?>("TypeId");
 
                     b.Property<string>("WrittenBy");
 
@@ -191,7 +197,7 @@ namespace Praca_Inzynierska.Migrations
 
             modelBuilder.Entity("Praca_Inzynierska.Models.MovieToActors", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("MovieId")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -199,11 +205,7 @@ namespace Praca_Inzynierska.Migrations
 
                     b.Property<string>("ActorName");
 
-                    b.Property<int>("MovieId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MovieId");
+                    b.HasKey("MovieId");
 
                     b.ToTable("MoviesToActor");
                 });
@@ -323,20 +325,18 @@ namespace Praca_Inzynierska.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("Praca_Inzynierska.Models.Actor", b =>
+                {
+                    b.HasOne("Praca_Inzynierska.Models.Movie")
+                        .WithMany("Actors")
+                        .HasForeignKey("MovieId");
+                });
+
             modelBuilder.Entity("Praca_Inzynierska.Models.Movie", b =>
                 {
                     b.HasOne("Praca_Inzynierska.Models.Type", "Type")
                         .WithMany()
-                        .HasForeignKey("TypeId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Praca_Inzynierska.Models.MovieToActors", b =>
-                {
-                    b.HasOne("Praca_Inzynierska.Models.Movie")
-                        .WithMany("Actors")
-                        .HasForeignKey("MovieId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("TypeId");
                 });
 #pragma warning restore 612, 618
         }

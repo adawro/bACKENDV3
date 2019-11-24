@@ -74,7 +74,6 @@ namespace Praca_Inzynierska.Controllers
         }
         [ProducesResponseType(typeof(ActorListReturnDto), 200)]
         [ProducesResponseType(typeof(IDictionary<string, string[]>), 400)]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpGet("find")]
         public IActionResult FindActor(FindActorDto actorName)    
         {
@@ -83,6 +82,17 @@ namespace Praca_Inzynierska.Controllers
             if (!result.Success) return BadRequest(result.Message);
 
             return Ok(result.ActorList);
+        }
+        [ProducesResponseType(typeof(ActorReturnDetails), 200)]
+        [ProducesResponseType(typeof(IDictionary<string, string[]>), 400)]
+        [HttpGet("details/{id}")]
+        public IActionResult ActorDetails(int id)
+        {
+            var result = _actorService.ActorDetails(id);
+
+            if (!result.Success) return BadRequest(result.Message);
+
+            return Ok(result.ActorDetails);
         }
     }
 }

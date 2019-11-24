@@ -8,6 +8,7 @@ namespace Praca_Inzynierska.DTO.ReturnDto
 {
     public class MovieReturnDto
     {
+        public int MovieId { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public DateTime ReleaseDate { get; set; }
@@ -16,6 +17,6 @@ namespace Praca_Inzynierska.DTO.ReturnDto
         public string WrittenBy { get; set; }
         public string Country { get; set; }
         public int BoxOffice { get; set; }
-        public List<string> Actors { get; set; }
+        public Dictionary<string, string> Actors { get; set; }
     }
 }

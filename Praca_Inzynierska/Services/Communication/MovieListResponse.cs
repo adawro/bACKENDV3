@@ -1,23 +1,25 @@
-﻿using System.Collections.Generic;
-using Praca_Inzynierska.DTO;
+﻿using Praca_Inzynierska.DTO;
 using Praca_Inzynierska.DTO.ReturnDto;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Praca_Inzynierska.Services.Communication
 {
     public class MovieListResponse : Response
     {
-        public MovieReturnForActor MovieList { get; }
+        public MovieListReturnDto MovieList { get; }
 
-        private MovieListResponse(bool success, Dictionary<string, string[]> message, MovieReturnForActor movieList)
+        private MovieListResponse(bool success, Dictionary<string, string[]> message, MovieListReturnDto movieList)
             : base(success, message)
         {
             MovieList = movieList;
         }
 
-        public MovieListResponse(MovieReturnForActor movieList)
+        public MovieListResponse(MovieListReturnDto movieList)
             : this(true, new Dictionary<string, string[]>(), movieList)
         {
-
         }
 
         public MovieListResponse(Dictionary<string, string[]> message)

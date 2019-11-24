@@ -5,9 +5,8 @@ using System.Threading.Tasks;
 
 namespace Praca_Inzynierska.DTO.ReturnDto
 {
-    public class ActorReturnDto
+    public class ActorReturnDetails
     {
-        public int Id { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
         public DateTime Born { get; set; }
@@ -15,5 +14,6 @@ namespace Praca_Inzynierska.DTO.ReturnDto
         public string CV { get; set; }
         public string CityBorn { get; set; }
         public string CountryBorn { get; set; }
+        public MovieReturnForActor Movies { get; set; }
     }
 }

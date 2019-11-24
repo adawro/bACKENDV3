@@ -17,6 +17,7 @@ using Praca_Inzynierska.Persistence;
 using Praca_Inzynierska.Services.Communication;
 using Praca_Inzynierska.Services.Interfaces;
 using Praca_Inzynierska.DTO.ReturnDto;
+using Praca_Inzynierska.Services;
 
 namespace Praca_Inzynierska.Services
 {
@@ -24,15 +25,37 @@ namespace Praca_Inzynierska.Services
     {
         private readonly AppDbContext _context;
         private readonly IMapper _mapper;
+        private readonly IMovieService _movieService;
         private readonly string _userName;
 
-        public ActorService(IMapper mapper, IHttpContextAccessor httpContext, AppDbContext context)
+        public ActorService(IMapper mapper, IHttpContextAccessor httpContext, AppDbContext context, IMovieService movieService)
         {
             _mapper = mapper;
             _context = context;
+            _movieService = movieService;
             _userName = httpContext.HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)
                 ?.Value;
         }
+
+        public ActorDetailsResponse ActorDetails(int id)
+        {
+            Dictionary<string, string[]> errors = new Dictionary<string, string[]>();
+
+            Actor actor = _context.Actors.FirstOrDefault(a => a.Id == id);
+
+            if(actor == null)
+            {
+                errors.Add("Actor", new[] { "Nie istnieje dany actor" });
+                return new ActorDetailsResponse(errors);
+            }
+
+            var movieList = _movieService.FindMoviesForActor(id);
+
+            var actorDetail = _mapper.Map<Actor, ActorReturnDetails>(actor);
+            actorDetail.Movies = movieList;
+            return new ActorDetailsResponse(actorDetail);
+        }
+
         public ActorResponse AddActor(ActorSaveDto actorSave)
         {
             Dictionary<string, string[]> errors = new Dictionary<string, string[]>();

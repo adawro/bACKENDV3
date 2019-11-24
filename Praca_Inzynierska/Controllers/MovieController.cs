@@ -47,5 +47,27 @@ namespace Praca_Inzynierska.Controllers
 
             return Ok(result.Movie);
         }
+        [ProducesResponseType(typeof(MovieListReturnDto), 200)]
+        [ProducesResponseType(typeof(IDictionary<string, string[]>), 400)]
+        [HttpGet("find")]
+        public IActionResult FindMovie(FindMovieDto movieTitle)
+        {
+            var result = _movieService.FindMovie(movieTitle);
+
+            if (!result.Success) return BadRequest(result.Message);
+
+            return Ok(result.MovieList);
+        }
+        [ProducesResponseType(typeof(MovieReturnDto), 200)]
+        [ProducesResponseType(typeof(IDictionary<string, string[]>), 400)]
+        [HttpGet("details/{id}")]
+        public IActionResult MovieDetails(int id)
+        {
+            var result = _movieService.MovieDetails(id);
+
+            if (!result.Success) return BadRequest(result.Message);
+
+            return Ok(result.Movie);
+        }
     }
 }

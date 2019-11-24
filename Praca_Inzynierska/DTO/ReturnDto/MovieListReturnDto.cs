@@ -5,9 +5,8 @@ using System.Threading.Tasks;
 
 namespace Praca_Inzynierska.DTO.ReturnDto
 {
-    public class MovieReturnForActor
+    public class MovieListReturnDto
     {
-        public List<MovieReturnForListDto> Movies { get; set; }
+        public List<MovieReturnForList> Movies { get; set; }
     }
 }
-

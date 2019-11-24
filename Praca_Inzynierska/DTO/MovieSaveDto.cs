@@ -1,7 +1,6 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Praca_Inzynierska.DTO
 {
@@ -15,6 +14,6 @@ namespace Praca_Inzynierska.DTO
         public string WrittenBy { get; set; }
         public string Country { get; set; }
         public int BoxOffice { get; set; }
-        public IList<int> ActorId { get; set; }
+        public Dictionary<int, string> Actors { get; set; }
     }
 }

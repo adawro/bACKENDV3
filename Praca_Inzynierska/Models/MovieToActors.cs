@@ -9,8 +9,6 @@ namespace Praca_Inzynierska.Models
         public int Id { get; set; }
         public int MovieId { get; set; }
         public int Actor { get; set; }
-        public string ActorName { get; set; }
-
-         
+        public string ActorNameInMovie { get; set; }
     }
 }

@@ -61,49 +61,101 @@ namespace Praca_Inzynierska.Services
             List<string> ActorNames = new List<string>();
             MovieReturnDto movieReturn = new MovieReturnDto();
 
-            Movie movieSave = new Movie
-            {
-                Type = type,
-                Title = movie.Title,
-                BoxOffice = movie.BoxOffice,
-                Description = movie.Description,
-                ReleaseDate = movie.ReleaseDate,
-                TypeId = type.TypeId,
-                DirectionBy = movie.DirectionBy,
-                WrittenBy = movie.WrittenBy,
-                Country = movie.Country
-            };
-            var actorListSave = new List<MovieToActors>();
+            Movie movieSave = _mapper.Map<MovieSaveDto, Movie>(movie);
+            movieSave.Type = type;
 
-            foreach (var e in movie.ActorId)
+            List<MovieToActors> actorListSave = new List<MovieToActors>();
+            Dictionary<string, string> actorDicReturn = new Dictionary<string, string>();
+
+            foreach (var e in movie.Actors)
             {
-                var tmp = _context.Actors.FirstOrDefault(a => a.Id == e);
-                var actorName = tmp.Name + " " + tmp.Surname;
-                var actor = new MovieToActors { MovieId = movieSave.MovieId, Actor = e, ActorName = actorName };
+                Actor tmp = _context.Actors.FirstOrDefault(a => a.Id == e.Key);
+                string namer = tmp.Name + " " + tmp.Surname;
+                MovieToActors actor = new MovieToActors { MovieId = movieSave.MovieId, Actor = e.Key, ActorNameInMovie = e.Value };
                 actorListSave.Add(actor);
-                ActorNames.Add(actorName);
+                ActorNames.Add(e.Value);
+                actorDicReturn.Add(namer, e.Value);
             }
 
-            try
-            {
-                movieSave.Actors = actorListSave;
-                _context.MoviesToActor.AddRange(actorListSave);
-                _context.Movies.Add(movieSave);
-                movieReturn = _mapper.Map<Movie, MovieReturnDto>(movieSave);
-                movieReturn.Actors = ActorNames;
-                _context.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-                errors.Add("Wystąpił nieoczekiwany błąd", new[] { ex.Message });
-                return new MovieResponse(errors);
-            }
+            movieSave.Actors = actorListSave;
+
+            _context.MoviesToActor.AddRange(actorListSave);
+            _context.Movies.Add(movieSave);
+            _context.SaveChanges();
+
+            movieReturn = _mapper.Map<Movie, MovieReturnDto>(movieSave);
+            movieReturn.Actors = actorDicReturn;
+
             return new MovieResponse(movieReturn);
         }
 
-        public MovieListResponse FindMoviesForActor(int id)
+        public MovieListResponse FindMovie(FindMovieDto movieTitle)
         {
-            throw new NotImplementedException();
+            Dictionary<string, string[]> errors = new Dictionary<string, string[]>();
+
+            var movie = _context.Movies.Where(m => m.Title.Contains(movieTitle.Title));
+
+            if(movie==null)
+            {
+                errors.Add("Movie", new[] { "Nie istanieje taki film" });
+                return new MovieListResponse(errors);
+            }
+
+            List<Movie> movieList = movie.ToList();
+            List<MovieReturnForList> movieListReturn = _mapper.Map<List<Movie>, List<MovieReturnForList>>(movieList);
+
+            MovieListReturnDto moviesReturn = new MovieListReturnDto
+            {
+                Movies = movieListReturn
+            };
+            return new MovieListResponse(moviesReturn);
+        }
+
+        public MovieReturnForActor FindMoviesForActor(int id)
+        {
+            Dictionary<string, string[]> errors = new Dictionary<string, string[]>();
+
+            Actor actor = _context.Actors.FirstOrDefault(a => a.Id == id);
+            MovieReturnForListDto tmp = new MovieReturnForListDto();
+            MovieReturnForActor movieReturn = new MovieReturnForActor
+            {
+                Movies = new List<MovieReturnForListDto>()
+            };
+            foreach (var e in _context.MoviesToActor.Where(a => a.Actor == id))
+            {
+                var movie = _context.Movies.FirstOrDefault(m => m.MovieId == e.MovieId);
+                tmp = _mapper.Map<Movie, MovieReturnForListDto>(movie);
+                tmp.ActorNameInMovie = e.ActorNameInMovie;
+                movieReturn.Movies.Add(tmp);
+            }
+            movieReturn.Movies.Sort();
+            return movieReturn;
+        }
+
+        public MovieResponse MovieDetails(int id)
+        {
+            Dictionary<string, string[]> errors = new Dictionary<string, string[]>();
+
+            var movie = _context.Movies.FirstOrDefault(m => m.MovieId == id);
+
+            if (movie == null)
+            {
+                errors.Add("Movie", new[] { "Nie istanieje taki film" });
+                return new MovieResponse(errors);
+            }
+            Models.Type type = _context.Types.FirstOrDefault(t => t.TypeId == movie.TypeId);
+
+            MovieReturnDto movieReturn = _mapper.Map<Movie, MovieReturnDto>(movie);
+            movieReturn.Actors = new Dictionary<string, string>();
+            movieReturn.Type = type.Name;
+
+            foreach (var e in _context.MoviesToActor.Where(m=>m.MovieId == id))
+            {
+                Actor tmp = _context.Actors.FirstOrDefault(a => a.Id == e.Actor);
+                movieReturn.Actors.Add(tmp.ActorName, e.ActorNameInMovie);
+            }
+            return new MovieResponse(movieReturn);
         }
     }
 }
+

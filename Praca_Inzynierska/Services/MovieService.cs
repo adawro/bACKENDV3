@@ -128,7 +128,6 @@ namespace Praca_Inzynierska.Services
                 tmp.ActorNameInMovie = e.ActorNameInMovie;
                 movieReturn.Movies.Add(tmp);
             }
-            movieReturn.Movies.Sort();
             return movieReturn;
         }
 

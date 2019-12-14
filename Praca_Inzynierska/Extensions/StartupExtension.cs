@@ -19,7 +19,6 @@ using Praca_Inzynierska.Services.Interfaces;
 
 namespace Praca_Inzynierska.Extensions
 {
-    // Autor: Tomasz Zysk
     public static class StartupExtensions
     {
         // TODO: jesli juz by bylo gdzies na serwerze, ograniczyc odpowiednio dostep

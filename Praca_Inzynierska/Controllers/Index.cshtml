@@ -1,0 +1,90 @@
+﻿@page
+@model Praca_Inzynierska.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Actor[0].Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Actor[0].Surname)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Actor[0].Born)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Actor[0].Age)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Actor[0].CV)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Actor[0].CityBorn)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Actor[0].CountryBorn)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Actor[0].AccountCreate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Actor[0].ActorName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Actor[0].ActorSurname)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Actor) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Surname)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Born)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Age)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CV)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CityBorn)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CountryBorn)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AccountCreate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ActorName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ActorSurname)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -1,0 +1,79 @@
+﻿@page
+@model Praca_Inzynierska.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Actor</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Actor.Name" class="control-label"></label>
+                <input asp-for="Actor.Name" class="form-control" />
+                <span asp-validation-for="Actor.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Actor.Surname" class="control-label"></label>
+                <input asp-for="Actor.Surname" class="form-control" />
+                <span asp-validation-for="Actor.Surname" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Actor.Born" class="control-label"></label>
+                <input asp-for="Actor.Born" class="form-control" />
+                <span asp-validation-for="Actor.Born" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Actor.Age" class="control-label"></label>
+                <input asp-for="Actor.Age" class="form-control" />
+                <span asp-validation-for="Actor.Age" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Actor.CV" class="control-label"></label>
+                <input asp-for="Actor.CV" class="form-control" />
+                <span asp-validation-for="Actor.CV" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Actor.CityBorn" class="control-label"></label>
+                <input asp-for="Actor.CityBorn" class="form-control" />
+                <span asp-validation-for="Actor.CityBorn" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Actor.CountryBorn" class="control-label"></label>
+                <input asp-for="Actor.CountryBorn" class="form-control" />
+                <span asp-validation-for="Actor.CountryBorn" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Actor.AccountCreate" class="control-label"></label>
+                <input asp-for="Actor.AccountCreate" class="form-control" />
+                <span asp-validation-for="Actor.AccountCreate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Actor.ActorName" class="control-label"></label>
+                <input asp-for="Actor.ActorName" class="form-control" />
+                <span asp-validation-for="Actor.ActorName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Actor.ActorSurname" class="control-label"></label>
+                <input asp-for="Actor.ActorSurname" class="form-control" />
+                <span asp-validation-for="Actor.ActorSurname" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

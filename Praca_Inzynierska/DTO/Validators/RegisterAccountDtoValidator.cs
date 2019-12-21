@@ -8,7 +8,7 @@ namespace Praca_Inzynierska.DTO.Validators
         {
             RuleFor(x => x.UserName)
                 .NotEmpty()
-                .WithMessage("Pole nazwa uzytkownika nie moze byc puste");
+                .WithMessage("Pole nazwa uzytkownika nie moze byccccccccc puste");
             RuleFor(x => x.Email)
                 .NotEmpty()
                 .WithMessage("Pole Email nie moze byc puste")

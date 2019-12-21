@@ -70,6 +70,11 @@ namespace Praca_Inzynierska.Services
             foreach (var e in movie.Actors)
             {
                 Actor tmp = _context.Actors.FirstOrDefault(a => a.Id == e.Key);
+                if(tmp == null)
+                {
+                    errors.Add(e.Key.ToString(), new[] { "Aktor o id = "+e.Key+" nie istnieje"});
+                    continue;
+                }
                 string namer = tmp.Name + " " + tmp.Surname;
                 MovieToActors actor = new MovieToActors { MovieId = movieSave.MovieId, Actor = e.Key, ActorNameInMovie = e.Value };
                 actorListSave.Add(actor);
@@ -77,6 +82,10 @@ namespace Praca_Inzynierska.Services
                 actorDicReturn.Add(namer, e.Value);
             }
 
+            if(errors!=null)
+            {
+                return new MovieResponse(errors);
+            }
             movieSave.Actors = actorListSave;
 
             _context.MoviesToActor.AddRange(actorListSave);

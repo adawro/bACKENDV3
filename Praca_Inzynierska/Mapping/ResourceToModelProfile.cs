@@ -11,6 +11,7 @@ namespace Praca_Inzynierska.Mapping
         public ResourceToModelProfile()
         {
             CreateMap<RegisterAccountDto, UserAccount>();
+            CreateMap<UserAccount, AccountReturn>();
             CreateMap<ActorSaveDto, Actor>()
                 .ForMember(dest => dest.ActorName, opt => opt.MapFrom(src => src.Name.ToUpper() + " " + src.Surname.ToUpper()))
                 .ForMember(dest => dest.ActorSurname, opt => opt.MapFrom(src => src.Surname.ToUpper() + " " + src.Name.ToUpper()));

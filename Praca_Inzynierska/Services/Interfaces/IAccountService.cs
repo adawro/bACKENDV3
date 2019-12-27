@@ -7,10 +7,12 @@ namespace Praca_Inzynierska.Services.Interfaces
     public interface IAccountService
     {
         Task<AccountResponse> RegisterAccountAsync(RegisterAccountDto model);
+        Task<AccountResponse> RegisterModAccountAsync(RegisterAccountDto model);
         Task<AccountResponse> LoginAccountAsync(LoginAccountDto model);
         AccountResponse EditNameSurname(AccountEditNameSurnameDto model);
         AccountResponse EditUserName(AccountUserNameEditDto model);
         Task<AccountResponse> ChangePassword(AccountEditPasswordDto passwordDto);
         Task<AccountResponse> EditEmail(AccountEditEmailDto emailDto);
+        AccountReturnResponse ReturnMe();
     }
 }

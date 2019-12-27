@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Praca_Inzynierska.DTO;
 using Praca_Inzynierska.Services.Interfaces;
-
+using Praca_Inzynierska.DTO.ReturnDto;
 
 namespace Praca_Inzynierska.Controllers
 {
@@ -34,6 +34,18 @@ namespace Praca_Inzynierska.Controllers
         [ProducesResponseType(typeof(IDictionary<string, string[]>), 400)]
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterAccountDto model)
+        {
+            var result = await _accountService.RegisterAccountAsync(model);
+
+            if (!result.Success) return BadRequest(result.Message);
+
+            return Ok(result.Token);
+        }
+
+        [ProducesResponseType(typeof(JwtTokenDto), 200)]
+        [ProducesResponseType(typeof(IDictionary<string, string[]>), 400)]
+        [HttpPost("registerMod")]
+        public async Task<IActionResult> RegisterMod([FromBody] RegisterAccountDto model)
         {
             var result = await _accountService.RegisterAccountAsync(model);
 
@@ -141,6 +153,18 @@ namespace Praca_Inzynierska.Controllers
             if (!result.Success) return BadRequest(result.Message);
 
             return Ok(result.Token);
+        }
+        [ProducesResponseType(typeof(JwtTokenDto), 200)]
+        [ProducesResponseType(typeof(IDictionary<string, string[]>), 400)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [HttpGet("FindMe")]
+        public IActionResult ReturnMe()
+        {
+            var result = _accountService.ReturnMe();
+
+            if (!result.Success) return BadRequest(result.Message);
+
+            return Ok(result.User);
         }
     }
 }

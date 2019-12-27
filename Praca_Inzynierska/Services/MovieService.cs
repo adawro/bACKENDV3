@@ -65,6 +65,7 @@ namespace Praca_Inzynierska.Services
             movieSave.Type = type;
 
             List<MovieToActors> actorListSave = new List<MovieToActors>();
+
             Dictionary<string, string> actorDicReturn = new Dictionary<string, string>();
 
             foreach (var e in movie.Actors)

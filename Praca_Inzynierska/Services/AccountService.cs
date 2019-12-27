@@ -16,6 +16,7 @@ using Praca_Inzynierska.Models;
 using Praca_Inzynierska.Persistence;
 using Praca_Inzynierska.Services.Communication;
 using Praca_Inzynierska.Services.Interfaces;
+using Praca_Inzynierska.DTO.ReturnDto;
 
 namespace Praca_Inzynierska.Services
 {
@@ -50,6 +51,21 @@ namespace Praca_Inzynierska.Services
         {
             Dictionary<string, string[]> errors = new Dictionary<string, string[]>();
 
+            UserAccount userr = _context.Users.FirstOrDefault(e => e.Email == model.Email);
+
+            if(userr != null)
+            {
+                errors.Add("Emial", new[] { "Email jets juz zajety" });
+                return new AccountResponse(errors);
+            }
+
+            userr = _context.Users.FirstOrDefault(e => e.NormalizedUserName == model.UserName.ToUpper());
+            if (userr != null)
+            {
+                errors.Add("Useranme", new[] { "Nazwa uzytkoniwka jets juz zajeta" });
+                return new AccountResponse(errors);
+            }
+
             UserAccount user = _mapper.Map<RegisterAccountDto, UserAccount>(model);
 
             var result = await _userManager.CreateAsync(user, model.Password);
@@ -69,7 +85,7 @@ namespace Praca_Inzynierska.Services
             UserAccount appUser = _userManager.Users.SingleOrDefault(r => r.Email == model.Email);
             JwtTokenDto response = new JwtTokenDto
             {
-                Token = GenerateJwtToken(model.Email, appUser)
+                Token = GenerateJwtToken(model.UserName, appUser)
             };
             return new AccountResponse(response);
         }
@@ -92,13 +108,14 @@ namespace Praca_Inzynierska.Services
 
             return new AccountResponse(response);
         }
-        private string GenerateJwtToken(string email, UserAccount user)
+        private string GenerateJwtToken(string userName, UserAccount user)
         {
             List<Claim> claims = new List<Claim>
             {
-                new Claim(JwtRegisteredClaimNames.Sub, email),
+                new Claim(JwtRegisteredClaimNames.Sub, userName),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(ClaimTypes.NameIdentifier, user.Id),
+                new Claim(ClaimTypes.Role, user.Rola),
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtKey"]));
@@ -215,6 +232,7 @@ namespace Praca_Inzynierska.Services
         {
             Dictionary<string, string[]> errors = new Dictionary<string, string[]>();
 
+
             UserAccount user = _context.UserAccounts.AsNoTracking().FirstOrDefault(u => u.UserName == _userName);
             if (user == null)
             {
@@ -254,6 +272,70 @@ namespace Praca_Inzynierska.Services
                 Token = GenerateJwtToken(user.Email, user)
             };
 
+            return new AccountResponse(response);
+        }
+
+        public AccountReturnResponse ReturnMe()
+        {
+            Dictionary<string, string[]> errors = new Dictionary<string, string[]>();
+
+            UserAccount user = _context.Users.FirstOrDefault(u => u.UserName == _userName);
+            if (user == null)
+            {
+                errors.Add("Konto", new[] { "Musiz sie zalogować" });
+                return new AccountReturnResponse(errors);
+            }
+
+            var userReturn = _mapper.Map<UserAccount, AccountReturn>(user);
+
+            return new AccountReturnResponse(userReturn);
+        }
+
+        public async Task<AccountResponse> RegisterModAccountAsync(RegisterAccountDto model)
+        {
+            Dictionary<string, string[]> errors = new Dictionary<string, string[]>();
+
+            UserAccount userr = _context.Users.FirstOrDefault(e => e.Email == model.Email);
+
+            if(userr.Rola !="admin")
+            {
+                errors.Add("Rola", new[] { "NIe masz tutaj dostępu" });
+                return new AccountResponse(errors);
+            }
+            if (userr != null)
+            {
+                errors.Add("Emial", new[] { "Email jets juz zajety" });
+                return new AccountResponse(errors);
+            }
+
+            userr = _context.Users.FirstOrDefault(e => e.NormalizedUserName == model.UserName.ToUpper());
+            if (userr != null)
+            {
+                errors.Add("Useranme", new[] { "Nazwa uzytkoniwka jest juz zajeta" });
+                return new AccountResponse(errors);
+            }
+
+            UserAccount user = _mapper.Map<RegisterAccountDto, UserAccount>(model);
+
+            var result = await _userManager.CreateAsync(user, model.Password);
+
+            string rola = "moderator";
+
+            user.Rola = rola;
+            if (!result.Succeeded)
+            {
+                foreach (var error in result.Errors) errors.Add(error.Code, new[] { error.Description });
+
+                return new AccountResponse(errors);
+            }
+
+            _context.SaveChanges();
+
+            UserAccount appUser = _userManager.Users.SingleOrDefault(r => r.Email == model.Email);
+            JwtTokenDto response = new JwtTokenDto
+            {
+                Token = GenerateJwtToken(model.Email, appUser)
+            };
             return new AccountResponse(response);
         }
     }

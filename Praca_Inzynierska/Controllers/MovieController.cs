@@ -49,8 +49,8 @@ namespace Praca_Inzynierska.Controllers
         }
         [ProducesResponseType(typeof(MovieListReturnDto), 200)]
         [ProducesResponseType(typeof(IDictionary<string, string[]>), 400)]
-        [HttpGet("find")]
-        public IActionResult FindMovie(FindMovieDto movieTitle)
+        [HttpGet("find/{movieTitle}")]
+        public IActionResult FindMovie(string movieTitle)
         {
             var result = _movieService.FindMovie(movieTitle);
 

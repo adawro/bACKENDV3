@@ -12,7 +12,7 @@ namespace Praca_Inzynierska.Services.Interfaces
     {
         MovieResponse AddMovie(MovieSaveDto movie);
         MovieReturnForActor FindMoviesForActor(int id);
-        MovieListResponse FindMovie(FindMovieDto movieTitle);
+        MovieListResponse FindMovie(string movieTitle);
         MovieResponse MovieDetails(int id);
     }
 }

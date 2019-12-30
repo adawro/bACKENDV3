@@ -7,7 +7,7 @@ namespace Praca_Inzynierska.Services.Interfaces
     {
         ActorResponse AddActor(ActorSaveDto actorSave);
         ActorResponse EditActor(int id, ActorEditDto actorEditDto);
-        ActorListResponse FindActor(FindActorDto findActor);
+        ActorListResponse FindActor(string findActor);
         ActorDetailsResponse ActorDetails(int id);
 
     }

@@ -83,7 +83,7 @@ namespace Praca_Inzynierska.Services
                 actorDicReturn.Add(namer, e.Value);
             }
 
-            if(errors!=null)
+            if(errors==null)
             {
                 return new MovieResponse(errors);
             }
@@ -99,11 +99,11 @@ namespace Praca_Inzynierska.Services
             return new MovieResponse(movieReturn);
         }
 
-        public MovieListResponse FindMovie(FindMovieDto movieTitle)
+        public MovieListResponse FindMovie(string movieTitle)
         {
             Dictionary<string, string[]> errors = new Dictionary<string, string[]>();
 
-            var movie = _context.Movies.Where(m => m.Title.Contains(movieTitle.Title));
+            var movie = _context.Movies.Where(m => m.Title.Contains(movieTitle));
 
             if(movie==null)
             {

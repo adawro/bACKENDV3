@@ -150,7 +150,7 @@ namespace Praca_Inzynierska.Services
             }
         }
 
-        public ActorListResponse FindActor(FindActorDto findActor)
+        public ActorListResponse FindActor(string findActor)
         {
             Dictionary<string, string[]> errors = new Dictionary<string, string[]>();
 
@@ -160,7 +160,7 @@ namespace Praca_Inzynierska.Services
             
             foreach (var e in _context.Actors)
             {
-                if (e.ActorName.Contains(findActor.ActorName.ToUpper()) || e.ActorSurname.Contains(findActor.ActorName.ToUpper()))
+                if (e.ActorName.Contains(findActor.ToUpper()) || e.ActorSurname.Contains(findActor.ToUpper()))
                 {
                     actors.Add(_mapper.Map<Actor, ActorReturnDto>(e));
                 }

@@ -74,8 +74,8 @@ namespace Praca_Inzynierska.Controllers
         }
         [ProducesResponseType(typeof(ActorListReturnDto), 200)]
         [ProducesResponseType(typeof(IDictionary<string, string[]>), 400)]
-        [HttpGet("find")]
-        public IActionResult FindActor(FindActorDto actorName)    
+        [HttpGet("find/{actorName}")]
+        public IActionResult FindActor(string actorName)    
         {
             var result = _actorService.FindActor(actorName);
 

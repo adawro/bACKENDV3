@@ -70,7 +70,7 @@ namespace Praca_Inzynierska.Services
 
             var result = await _userManager.CreateAsync(user, model.Password);
 
-            string rola = "user";
+            string rola = "moderator";
 
             user.Rola = rola;
             if (!result.Succeeded)
@@ -113,9 +113,12 @@ namespace Praca_Inzynierska.Services
             List<Claim> claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Sub, userName),
+                new Claim(JwtRegisteredClaimNames.Email, user.Email),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(ClaimTypes.NameIdentifier, user.Id),
                 new Claim(ClaimTypes.Role, user.Rola),
+                new Claim(JwtRegisteredClaimNames.GivenName, user.Name),
+                new Claim(JwtRegisteredClaimNames.FamilyName, user.Surname)
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtKey"]));
@@ -137,14 +140,25 @@ namespace Praca_Inzynierska.Services
         {
             Dictionary<string, string[]> errors = new Dictionary<string, string[]>();
 
-            UserAccount user = _context.UserAccounts.AsNoTracking().FirstOrDefault(u => u.UserName == _userName);
+            UserAccount user = _context.UserAccounts.AsNoTracking().FirstOrDefault(u => u.UserName == _userName || u.Email == _userName);
             if (user == null)
             {
                 errors.Add("User", new[] { "Podane konto nie istnieje" });
                 return new AccountResponse(errors);
             }
-            user.Surname = model.Surname;
-            user.Name = model.Name;
+            if (model.Name != null)
+            {
+                user.Name = model.Name;
+            }
+            else
+                model.Name = user.Name;
+
+            if (model.Surname != null)
+            {
+                user.Surname = model.Surname;
+            }
+            else
+                model.Surname = user.Surname;
 
             try
             {
@@ -199,7 +213,7 @@ namespace Praca_Inzynierska.Services
         {
             Dictionary<string, string[]> errors = new Dictionary<string, string[]>();
 
-            UserAccount user = _context.UserAccounts.AsNoTracking().FirstOrDefault(u => u.UserName == _userName);
+            UserAccount user = _context.UserAccounts.AsNoTracking().FirstOrDefault(u => u.UserName == _userName || u.Email == _userName);
             if (user == null)
             {
                 errors.Add("User", new[] { "Podane konto nie istnieje" });

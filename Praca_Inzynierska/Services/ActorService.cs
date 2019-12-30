@@ -156,12 +156,7 @@ namespace Praca_Inzynierska.Services
 
 
             List<ActorReturnDto> actors = new List<ActorReturnDto>();
-            UserAccount user = _context.UserAccounts.FirstOrDefault(u => u.UserName == _userName);
-            if (user == null)
-            {
-                errors.Add("User", new[] { "Podane konto nie istnieje" });
-                return new ActorListResponse(errors);
-            }
+            
             
             foreach (var e in _context.Actors)
             {

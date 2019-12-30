@@ -101,6 +101,19 @@ namespace Praca_Inzynierska.Controllers
             return Ok(result.Token);
         }
 
+        [ProducesResponseType(typeof(JwtTokenDto), 200)]
+        [ProducesResponseType(typeof(IDictionary<string, string[]>), 400)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [HttpPut("edit/changePassword")]
+        public async Task<IActionResult> ChangePassword(AccountEditPasswordDto passwordDto)
+        {
+            var result = await _accountService.ChangePassword(passwordDto);
+
+            if (!result.Success) return BadRequest(result.Message);
+
+            return Ok(result.Token);
+        }
+
         /// <summary>
         ///     Edytujemy istniejące konto Imie i nazwisko
         /// </summary>

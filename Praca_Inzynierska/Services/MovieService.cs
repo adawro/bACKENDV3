@@ -66,24 +66,29 @@ namespace Praca_Inzynierska.Services
 
             List<MovieToActors> actorListSave = new List<MovieToActors>();
 
-            Dictionary<string, string> actorDicReturn = new Dictionary<string, string>();
+            List<ActorInFilm> actorListReturn = new List<ActorInFilm>();
 
             foreach (var e in movie.Actors)
             {
-                Actor tmp = _context.Actors.FirstOrDefault(a => a.Id == e.Key);
-                if(tmp == null)
+                Actor tmp = _context.Actors.FirstOrDefault(a => a.Id == e.ActorId);
+                if (tmp == null)
                 {
-                    errors.Add(e.Key.ToString(), new[] { "Aktor o id = "+e.Key+" nie istnieje"});
+                    errors.Add(e.ActorId.ToString(), new[] { "Aktor o id = " + e.ActorId + " nie istnieje" });
                     continue;
                 }
                 string namer = tmp.Name + " " + tmp.Surname;
-                MovieToActors actor = new MovieToActors { MovieId = movieSave.MovieId, Actor = e.Key, ActorNameInMovie = e.Value };
+                MovieToActors actor = new MovieToActors { MovieId = movieSave.MovieId, Actor = e.ActorId, ActorNameInMovie = e.NameInFilm };
                 actorListSave.Add(actor);
-                ActorNames.Add(e.Value);
-                actorDicReturn.Add(namer, e.Value);
+                ActorNames.Add(e.NameInFilm);
+                ActorInFilm actorInFilm = new ActorInFilm
+                {
+                    NameSurname = namer,
+                    NameSurnameInFilm = e.NameInFilm
+                };
+                actorListReturn.Add(actorInFilm);
             }
 
-            if(errors==null)
+            if (errors == null)
             {
                 return new MovieResponse(errors);
             }
@@ -94,7 +99,7 @@ namespace Praca_Inzynierska.Services
             _context.SaveChanges();
 
             movieReturn = _mapper.Map<Movie, MovieReturnDto>(movieSave);
-            movieReturn.Actors = actorDicReturn;
+            movieReturn.Actors = actorListReturn;
 
             return new MovieResponse(movieReturn);
         }
@@ -111,13 +116,21 @@ namespace Praca_Inzynierska.Services
                 return new MovieListResponse(errors);
             }
 
-            List<Movie> movieList = movie.ToList();
-            List<MovieReturnForList> movieListReturn = _mapper.Map<List<Movie>, List<MovieReturnForList>>(movieList);
+            List<MovieReturnForList> movies = new List<MovieReturnForList>();
 
-            MovieListReturnDto moviesReturn = new MovieListReturnDto
+            foreach (var item in movie)
             {
-                Movies = movieListReturn
-            };
+                MovieReturnForList movieReturn = new MovieReturnForList
+                {
+                    Title = item.Title,
+                    MovieId = item.MovieId,
+                    ReleaseDate = item.ReleaseDate.Year,
+                    WrittenBy = item.WrittenBy,
+                    DirectionBy = item.DirectionBy
+                };
+                movies.Add(movieReturn);
+            }
+            MovieListReturnDto moviesReturn = new MovieListReturnDto { Movies = movies };
             return new MovieListResponse(moviesReturn);
         }
 
@@ -155,13 +168,18 @@ namespace Praca_Inzynierska.Services
             Models.Type type = _context.Types.FirstOrDefault(t => t.TypeId == movie.TypeId);
 
             MovieReturnDto movieReturn = _mapper.Map<Movie, MovieReturnDto>(movie);
-            movieReturn.Actors = new Dictionary<string, string>();
+            movieReturn.Actors = new List<ActorInFilm>();
             movieReturn.Type = type.Name;
 
             foreach (var e in _context.MoviesToActor.Where(m=>m.MovieId == id))
             {
                 Actor tmp = _context.Actors.FirstOrDefault(a => a.Id == e.Actor);
-                movieReturn.Actors.Add(tmp.ActorName, e.ActorNameInMovie);
+                ActorInFilm actor = new ActorInFilm
+                {
+                    NameSurname = tmp.Name + " " + tmp.Surname,
+                    NameSurnameInFilm = e.ActorNameInMovie
+                };
+                movieReturn.Actors.Add(actor);
             }
             return new MovieResponse(movieReturn);
         }

@@ -9,6 +9,9 @@ namespace Praca_Inzynierska.DTO.ReturnDto
     {
         public int MovieId { get; set; }
         public string Title { get; set; }
-        public DateTime ReleaseDate { get; set; }
+        public int ReleaseDate { get; set; }
+        public string WrittenBy { get; set; }
+        public string DirectionBy { get; set; }
+
     }
 }

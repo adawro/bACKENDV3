@@ -19,6 +19,7 @@ namespace Praca_Inzynierska.Persistence
         public DbSet<Models.Type> Types { get;set; }
         public DbSet<Movie> Movies { get; set; }
         public DbSet<MovieToActors> MoviesToActor { get; set; }
+        public DbSet<Comment> Comments { get; set; }
         
 
         #region Role i testowy uzytkownik

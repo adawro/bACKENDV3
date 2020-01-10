@@ -2,17 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations;
 
-namespace Praca_Inzynierska.Models
+namespace Praca_Inzynierska.DTO
 {
-    public class Comment
+    public class CommentSaveDto
     {
-        public int CommentId { get; set; }
         public int MovieId { get; set; }
         public string CommentStrign { get; set; }
         public int Ratio { get; set; }
-        public string UserName { get; set; }
+
 
     }
 }

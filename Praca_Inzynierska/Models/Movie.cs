@@ -18,5 +18,7 @@ namespace Praca_Inzynierska.Models
         public string Country { get; set; }
         public int BoxOffice { get; set; }
         public IList<MovieToActors> Actors { get; set; }
+        public float Ratio { get; set; }
+
     }
 }

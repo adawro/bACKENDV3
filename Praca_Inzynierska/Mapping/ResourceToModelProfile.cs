@@ -31,6 +31,7 @@ namespace Praca_Inzynierska.Mapping
             CreateMap<Actor, ActorReturnDetails>();
             CreateMap<Actor, ActorReturnDetails>();
             CreateMap<Movie, MovieReturnForList>();
+            CreateMap<CommentSaveDto, Comment>();
 
         }
     }

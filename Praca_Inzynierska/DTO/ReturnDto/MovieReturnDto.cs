@@ -18,5 +18,6 @@ namespace Praca_Inzynierska.DTO.ReturnDto
         public string Country { get; set; }
         public int BoxOffice { get; set; }
         public List<ActorInFilm> Actors { get; set; }
+        public float Ratio { get; set; }
     }
 }

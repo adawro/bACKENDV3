@@ -64,7 +64,7 @@ namespace Praca_Inzynierska.Extensions
         public static void AddSqlServerContext(this IServiceCollection services, IConfiguration config)
         {
             services.AddDbContext<AppDbContext>(options =>
-                options.UseSqlServer(config.GetConnectionString("Praca_Inzynierska")));
+                options.UseSqlServer(config.GetConnectionString("Praca_Inzynierskaa")));
         }
         public static void AddCustomMvc(this IServiceCollection services)
         {
@@ -115,6 +115,7 @@ namespace Praca_Inzynierska.Extensions
             //services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IActorService, ActorService>();
             services.AddScoped<IMovieService, MovieService>();
+            services.AddScoped<ICommentService, CommentService>();
         }
     }
 }

@@ -37,7 +37,8 @@ namespace Praca_Inzynierska.Controllers
         /// </response>
         [ProducesResponseType(typeof(MovieReturnDto), 200)]
         [ProducesResponseType(typeof(IDictionary<string, string[]>), 400)]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Consumes("multipart/form-data")]
         [HttpPost]
         public IActionResult AddMovie([FromBody] MovieSaveDto movie)
         {

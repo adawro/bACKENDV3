@@ -19,6 +19,7 @@ namespace Praca_Inzynierska.Models
         public int BoxOffice { get; set; }
         public IList<MovieToActors> Actors { get; set; }
         public float Ratio { get; set; }
+        public IList<ImageMovie> Images { get; set; }
 
     }
 }

@@ -20,7 +20,9 @@ namespace Praca_Inzynierska.Persistence
         public DbSet<Movie> Movies { get; set; }
         public DbSet<MovieToActors> MoviesToActor { get; set; }
         public DbSet<Comment> Comments { get; set; }
-        
+        public DbSet<ImageMovie> MovieImages { get; set; }
+
+
 
         #region Role i testowy uzytkownik
         //protected override void OnModelCreating(ModelBuilder builder)

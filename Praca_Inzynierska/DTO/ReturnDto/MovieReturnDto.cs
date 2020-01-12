@@ -19,5 +19,6 @@ namespace Praca_Inzynierska.DTO.ReturnDto
         public int BoxOffice { get; set; }
         public List<ActorInFilm> Actors { get; set; }
         public float Ratio { get; set; }
+        public List<string> Images { get; set; }
     }
 }

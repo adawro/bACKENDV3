@@ -25,13 +25,15 @@ namespace Praca_Inzynierska.Services
         private readonly AppDbContext _context;
         private readonly IMapper _mapper;
         private readonly string _userName;
+        private readonly IImageService _imagesService;
 
-        public MovieService(IMapper mapper, IHttpContextAccessor httpContext, AppDbContext context)
+        public MovieService(IMapper mapper, IHttpContextAccessor httpContext, AppDbContext context, IImageService imagesService)
         {
             _mapper = mapper;
             _context = context;
             _userName = httpContext.HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)
                 ?.Value;
+            _imagesService = imagesService;
         }
 
         public MovieResponse AddMovie(MovieSaveDto movie)
@@ -94,8 +96,24 @@ namespace Praca_Inzynierska.Services
             }
             movieSave.Actors = actorListSave;
 
+            var uploadedImagesModels = new List<ImageMovie>();
+            if (movie.Images != null)
+                try
+                {
+                    uploadedImagesModels =
+                        _imagesService.UploadImagesToServer(movie.Images, movieSave);
+                }
+                catch (Exception ex)
+                {
+                    errors.Add("Images", new[] { ex.Message });
+                    return new MovieResponse(errors);
+                }
+
+            movieSave.Images = uploadedImagesModels;
+
             _context.MoviesToActor.AddRange(actorListSave);
             _context.Movies.Add(movieSave);
+            _context.MovieImages.AddRange(uploadedImagesModels);
             _context.SaveChanges();
 
             movieReturn = _mapper.Map<Movie, MovieReturnDto>(movieSave);

@@ -47,6 +47,7 @@ namespace Praca_Inzynierska.Controllers
             return Ok(result.Movie);
         }
 
+
         [ProducesResponseType(typeof(MovieReturnDto), 200)]
         [ProducesResponseType(typeof(IDictionary<string, string[]>), 400)]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]

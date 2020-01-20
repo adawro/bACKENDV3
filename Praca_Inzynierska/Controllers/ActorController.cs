@@ -24,6 +24,7 @@ namespace Praca_Inzynierska.Controllers
             _actorService = actorService;
         }
 
+
         /// <summary>
         ///     Dodaje nowego aktora do bazy
         /// </summary>

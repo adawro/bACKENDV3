@@ -12,8 +12,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace Praca_Inzynierska.Controllers
 {
-    [Produces("application/json")]
-    [Consumes("application/json")]
+
     [Route("api/[controller]")]
     [ApiController]
     public class ActorController : ControllerBase
@@ -40,7 +39,7 @@ namespace Praca_Inzynierska.Controllers
         [ProducesResponseType(typeof(IDictionary<string, string[]>), 400)]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpPost]
-        public IActionResult AddActor([FromBody] ActorSaveDto actorSave)
+        public IActionResult AddActor([FromForm] ActorSaveDto actorSave)
         {
             var result = _actorService.AddActor(actorSave);
 
@@ -64,7 +63,7 @@ namespace Praca_Inzynierska.Controllers
         [ProducesResponseType(typeof(IDictionary<string, string[]>), 400)]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpPut("{id}")]
-        public IActionResult EditActor(int id, [FromBody] ActorEditDto actorEdit)
+        public IActionResult EditActor(int id, [FromForm] ActorEditDto actorEdit)
         {
             var result = _actorService.EditActor(id, actorEdit);
 

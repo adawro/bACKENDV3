@@ -7,13 +7,14 @@ namespace Praca_Inzynierska.DTO.ReturnDto
 {
     public class ActorReturnDto
     {
-        public int Id { get; set; }
+        public int ActorId { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
-        public DateTime Born { get; set; }
+        public string Born { get; set; }
         public int Age { get; set; }
         public string CV { get; set; }
         public string CityBorn { get; set; }
         public string CountryBorn { get; set; }
+        public List<string> Images { get; set; }
     }
 }

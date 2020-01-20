@@ -21,6 +21,7 @@ namespace Praca_Inzynierska.Persistence
         public DbSet<MovieToActors> MoviesToActor { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<ImageMovie> MovieImages { get; set; }
+        public DbSet<ImageActor> ActorImages { get; set; }
 
 
 

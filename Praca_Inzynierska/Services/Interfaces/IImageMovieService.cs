@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Praca_Inzynierska.Services.Interfaces
 {
-    public interface IImageService
+    public interface IImageMovieService
     {
         void RemoveImages(IEnumerable<ImageMovie> imagesToRemove);
         void RemoveImage(string fileName);

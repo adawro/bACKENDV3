@@ -25,9 +25,9 @@ namespace Praca_Inzynierska.Services
         private readonly AppDbContext _context;
         private readonly IMapper _mapper;
         private readonly string _userName;
-        private readonly IImageService _imagesService;
+        private readonly IImageMovieService _imagesService;
 
-        public MovieService(IMapper mapper, IHttpContextAccessor httpContext, AppDbContext context, IImageService imagesService)
+        public MovieService(IMapper mapper, IHttpContextAccessor httpContext, AppDbContext context, IImageMovieService imagesService)
         {
             _mapper = mapper;
             _context = context;
@@ -70,9 +70,15 @@ namespace Praca_Inzynierska.Services
 
             List<ActorInFilm> actorListReturn = new List<ActorInFilm>();
 
+            if(movie.Actors == null)
+            {
+                errors.Add("Actors", new[] { "Lista aktorów nie może być pusta" });
+                return new MovieResponse(errors);
+            }
+
             foreach (var e in movie.Actors)
             {
-                Actor tmp = _context.Actors.FirstOrDefault(a => a.Id == e.ActorId);
+                Actor tmp = _context.Actors.FirstOrDefault(a => a.ActorId == e.ActorId);
                 if (tmp == null)
                 {
                     errors.Add(e.ActorId.ToString(), new[] { "Aktor o id = " + e.ActorId + " nie istnieje" });
@@ -96,7 +102,7 @@ namespace Praca_Inzynierska.Services
             }
             movieSave.Actors = actorListSave;
 
-            var uploadedImagesModels = new List<ImageMovie>();
+            List<ImageMovie> uploadedImagesModels = new List<ImageMovie>();
             if (movie.Images != null)
                 try
                 {
@@ -113,6 +119,135 @@ namespace Praca_Inzynierska.Services
 
             _context.MoviesToActor.AddRange(actorListSave);
             _context.Movies.Add(movieSave);
+            _context.MovieImages.AddRange(uploadedImagesModels);
+            _context.SaveChanges();
+
+            movieReturn = _mapper.Map<Movie, MovieReturnDto>(movieSave);
+            movieReturn.Actors = actorListReturn;
+
+            return new MovieResponse(movieReturn);
+        }
+
+        public MovieResponse EditMovie(int id, MovieEditDto movie)
+        {
+            Dictionary<string, string[]> errors = new Dictionary<string, string[]>();
+
+            UserAccount user = _context.UserAccounts.FirstOrDefault(u => u.UserName == _userName);
+            if (user == null)
+            {
+                errors.Add("User", new[] { "Podane konto nie istnieje" });
+                return new MovieResponse(errors);
+            }
+
+            if (user.Rola != "admin" && user.Rola != "moderator")
+            {
+                errors.Add("User", new[] { "Nie masz dostepu do tej czesci serwisu" });
+                return new MovieResponse(errors);
+            }
+
+            Models.Type type = _context.Types.FirstOrDefault(t => t.Name == movie.Type);
+            if (type == null)
+            {
+                errors.Add("TypeName", new[] { "Gatunek filmu o takiej nazwie nie istnieje" });
+                return new MovieResponse(errors);
+            }
+
+            List<string> ActorNames = new List<string>();
+            MovieReturnDto movieReturn = new MovieReturnDto();
+
+            Movie movieSave = _mapper.Map<MovieEditDto, Movie>(movie);
+            movieSave.Type = type;
+
+            List<MovieToActors> actorListSave = new List<MovieToActors>();
+
+            List<ActorInFilm> actorListReturn = new List<ActorInFilm>();
+
+            if (movie.ActorsRemove !=null)
+            {
+                foreach (var e in movie.ActorsRemove)
+                {
+                    var tmp = _context.MoviesToActor.FirstOrDefault(a => a.Actor == e && a.MovieId == id);
+                    try
+                    {
+                        _context.MoviesToActor.Remove(tmp);
+                    }
+                    catch (Exception ex)
+                    {
+
+                        errors.Add("ActorsRemove", new[] { ex.Message });
+                        return new MovieResponse(errors);
+                    }
+                }
+                _context.SaveChanges();
+            }
+            
+            foreach (var e in movie.ActorsAdd)
+            {
+                Actor tmp = _context.Actors.FirstOrDefault(a => a.ActorId == e.ActorId);
+                string namer = tmp.Name + " " + tmp.Surname;
+                if (tmp == null)
+                {
+                    errors.Add(e.ActorId.ToString(), new[] { "Aktor o id = " + e.ActorId + " nie istnieje" });
+                    continue;
+                }
+                var tmpp = _context.MoviesToActor.FirstOrDefault(a => a.Actor == e.ActorId && a.MovieId == id);
+                if (tmpp != null)
+                {
+                    ActorInFilm existActor = new ActorInFilm
+                    {
+                        NameSurname = namer,
+                        NameSurnameInFilm = e.NameInFilm
+                    };
+                    actorListReturn.Add(existActor);
+                    continue;
+                }
+               
+                MovieToActors actorSave = new MovieToActors { MovieId = movieSave.MovieId, Actor = e.ActorId, ActorNameInMovie = e.NameInFilm };
+                actorListSave.Add(actorSave);
+                ActorNames.Add(e.NameInFilm);
+                ActorInFilm actorInFilm = new ActorInFilm
+                {
+                    NameSurname = namer,
+                    NameSurnameInFilm = e.NameInFilm
+                };
+                actorListReturn.Add(actorInFilm);
+            }
+            
+            if (errors == null)
+            {
+                return new MovieResponse(errors);
+            }
+            movieSave.Actors = actorListSave;
+
+            var listImageRemove = new List<ImageMovie>();
+            if (movie.RemoveImages != null)
+                foreach (var fileName in movie.RemoveImages)
+                {
+                    var image = _context.ActorImages.FirstOrDefault(i => i.FileName == fileName);
+
+                    if (image != null) _imagesService.RemoveImages(movie.RemoveImages);
+
+                }
+
+            List<ImageMovie> uploadedImagesModels = new List<ImageMovie>();
+            if (movie.Images != null)
+                try
+                {
+                    uploadedImagesModels =
+                        _imagesService.UploadImagesToServer(movie.Images, movieSave);
+                }
+                catch (Exception ex)
+                {
+                    errors.Add("Images", new[] { ex.Message });
+                    return new MovieResponse(errors);
+                }
+
+            movieSave.Images = uploadedImagesModels;
+            movieSave.MovieId = id;
+            _context.MovieImages.RemoveRange(listImageRemove);
+            _context.MovieImages.AddRange(uploadedImagesModels);
+            _context.MoviesToActor.AddRange(actorListSave);
+            _context.Movies.Update(movieSave);
             _context.MovieImages.AddRange(uploadedImagesModels);
             _context.SaveChanges();
 
@@ -156,7 +291,7 @@ namespace Praca_Inzynierska.Services
         {
             Dictionary<string, string[]> errors = new Dictionary<string, string[]>();
 
-            Actor actor = _context.Actors.FirstOrDefault(a => a.Id == id);
+            Actor actor = _context.Actors.FirstOrDefault(a => a.ActorId == id);
             MovieReturnForListDto tmp = new MovieReturnForListDto();
             MovieReturnForActor movieReturn = new MovieReturnForActor
             {
@@ -191,7 +326,7 @@ namespace Praca_Inzynierska.Services
 
             foreach (var e in _context.MoviesToActor.Where(m=>m.MovieId == id))
             {
-                Actor tmp = _context.Actors.FirstOrDefault(a => a.Id == e.Actor);
+                Actor tmp = _context.Actors.FirstOrDefault(a => a.ActorId == e.Actor);
                 ActorInFilm actor = new ActorInFilm
                 {
                     NameSurname = tmp.Name + " " + tmp.Surname,

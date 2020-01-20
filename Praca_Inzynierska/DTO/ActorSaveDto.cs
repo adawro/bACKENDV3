@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
+using System.Collections.Generic;
 
 namespace Praca_Inzynierska.DTO
 {
@@ -10,5 +12,6 @@ namespace Praca_Inzynierska.DTO
         public string CV { get; set; }
         public string CityBorn { get; set; }
         public string CountryBorn { get; set; }
+        public IEnumerable<IFormFile> Images { get; set; }
     }
 }

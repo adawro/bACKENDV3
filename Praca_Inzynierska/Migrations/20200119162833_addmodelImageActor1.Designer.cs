@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Praca_Inzynierska.Persistence;
 
 namespace Praca_Inzynierska.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200119162833_addmodelImageActor1")]
+    partial class addmodelImageActor1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -202,15 +204,11 @@ namespace Praca_Inzynierska.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("ActorId");
-
                     b.Property<string>("FileName");
 
                     b.Property<int?>("MovieId");
 
                     b.HasKey("ImageId");
-
-                    b.HasIndex("ActorId");
 
                     b.HasIndex("MovieId");
 
@@ -391,10 +389,6 @@ namespace Praca_Inzynierska.Migrations
 
             modelBuilder.Entity("Praca_Inzynierska.Models.ImageMovie", b =>
                 {
-                    b.HasOne("Praca_Inzynierska.Models.Actor")
-                        .WithMany("Images")
-                        .HasForeignKey("ActorId");
-
                     b.HasOne("Praca_Inzynierska.Models.Movie", "Movie")
                         .WithMany("Images")
                         .HasForeignKey("MovieId");

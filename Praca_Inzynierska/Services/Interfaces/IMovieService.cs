@@ -11,6 +11,7 @@ namespace Praca_Inzynierska.Services.Interfaces
    public interface IMovieService
     {
         MovieResponse AddMovie(MovieSaveDto movie);
+        MovieResponse EditMovie(int id, MovieEditDto movie);
         MovieReturnForActor FindMoviesForActor(int id);
         MovieListResponse FindMovie(string movieTitle);
         MovieResponse MovieDetails(int id);

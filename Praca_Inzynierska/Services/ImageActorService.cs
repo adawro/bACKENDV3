@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Praca_Inzynierska.Services
 {
-    public class ImageMovieService : IImageMovieService
+    public class ImageActorService : IImageActorService
     {
         public void RemoveImage(string fileName)
         {
@@ -28,12 +28,12 @@ namespace Praca_Inzynierska.Services
             }
         }
 
-        public void RemoveImage(ImageMovie imageToRemove)
+        public void RemoveImage(ImageActor imageToRemove)
         {
             RemoveImage(imageToRemove.FileName);
         }
 
-        public void RemoveImages(IEnumerable<ImageMovie> imagesToRemove)
+        public void RemoveImages(IEnumerable<ImageActor> imagesToRemove)
         {
             foreach (var image in imagesToRemove) RemoveImage(image);
         }
@@ -43,9 +43,9 @@ namespace Praca_Inzynierska.Services
             foreach (var image in imagesToRemove) RemoveImage(image);
         }
 
-        public List<ImageMovie> UploadImagesToServer(IEnumerable<IFormFile> images, Movie movie)
+        public List<ImageActor> UploadImagesToServer(IEnumerable<IFormFile> images, Actor actor)
         {
-            var uploadedImagesModels = new List<ImageMovie>();
+            var uploadedImagesModels = new List<ImageActor>();
 
             if (images == null)
                 return uploadedImagesModels;
@@ -73,7 +73,7 @@ namespace Praca_Inzynierska.Services
                     throw new Exception($"Problem przy dodawaniu pliku {fileName}. {ex.Message}");
                 }
 
-                var newImage = new ImageMovie { FileName = fileName, Movie = movie };
+                var newImage = new ImageActor { FileName = fileName, Actor = actor };
                 uploadedImagesModels.Add(newImage);
             }
 

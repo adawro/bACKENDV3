@@ -116,7 +116,8 @@ namespace Praca_Inzynierska.Extensions
             services.AddScoped<IActorService, ActorService>();
             services.AddScoped<IMovieService, MovieService>();
             services.AddScoped<ICommentService, CommentService>();
-            services.AddScoped<IImageService, ImageMovieService>();
+            services.AddScoped<IImageMovieService, ImageMovieService>();
+            services.AddScoped<IImageActorService, ImageActorService>();
         }
     }
 }

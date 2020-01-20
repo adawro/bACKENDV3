@@ -10,13 +10,13 @@ namespace Praca_Inzynierska.DTO.Validators
             RuleFor(x => x.Name)
                 .NotEmpty()
                 .WithMessage("Pole imie nie moze byc puste")
-                .MaximumLength(20)
-                .WithMessage("Pole Imie moze zawierac od 1 do 20 znakow"); 
+                .MaximumLength(50)
+                .WithMessage("Pole Imie moze zawierac od 1 do 50 znakow");
             RuleFor(x => x.Surname)
                 .NotEmpty()
                 .WithMessage("Pole nazwisko nie moze byc puste")
-                .MaximumLength(30)
-                .WithMessage("Pole nazwisko moze zawierac od 1 do 30 znakow");
+                .MaximumLength(50)
+                .WithMessage("Pole nazwisko moze zawierac od 1 do 50 znakow");
             RuleFor(x => x.CityBorn)
                 .NotEmpty()
                 .WithMessage("Pole miasto urodzenia nie moze byc puste");

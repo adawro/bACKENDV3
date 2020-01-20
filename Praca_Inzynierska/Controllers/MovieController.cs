@@ -13,7 +13,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 namespace Praca_Inzynierska.Controllers
 {
     [Produces("application/json")]
-    [Consumes("application/json")]
     [Route("api/[controller]")]
     [ApiController]
     public class MovieController : ControllerBase
@@ -37,10 +36,9 @@ namespace Praca_Inzynierska.Controllers
         /// </response>
         [ProducesResponseType(typeof(MovieReturnDto), 200)]
         [ProducesResponseType(typeof(IDictionary<string, string[]>), 400)]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        [Consumes("multipart/form-data")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpPost]
-        public IActionResult AddMovie([FromBody] MovieSaveDto movie)
+        public IActionResult AddMovie([FromForm] MovieSaveDto movie)
         {
             var result = _movieService.AddMovie(movie);
 
@@ -48,6 +46,20 @@ namespace Praca_Inzynierska.Controllers
 
             return Ok(result.Movie);
         }
+
+        [ProducesResponseType(typeof(MovieReturnDto), 200)]
+        [ProducesResponseType(typeof(IDictionary<string, string[]>), 400)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [HttpPut("edit/{id}")]
+        public IActionResult EditMovie(int id, [FromBody]MovieEditDto movie)
+        {
+            var result = _movieService.EditMovie(id, movie);
+
+            if (!result.Success) return BadRequest(result.Message);
+
+            return Ok(result.Movie);
+        }
+
         [ProducesResponseType(typeof(MovieListReturnDto), 200)]
         [ProducesResponseType(typeof(IDictionary<string, string[]>), 400)]
         [HttpGet("find/{movieTitle}")]

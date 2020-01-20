@@ -5,7 +5,7 @@ namespace Praca_Inzynierska.Models
 {
     public class Actor
     {
-        public int Id { get; set; }
+        public int ActorId { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
         public DateTime Born { get; set; }
@@ -16,6 +16,7 @@ namespace Praca_Inzynierska.Models
         public string AccountCreate { get; set; }
         public string ActorName { get; set; }
         public string ActorSurname { get; set; }
+        public IList<ImageActor> Images { get; set; }
     }
 }
 

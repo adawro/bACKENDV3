@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Praca_Inzynierska.Persistence;
 
 namespace Praca_Inzynierska.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200119000234_udate")]
+    partial class udate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -179,38 +181,17 @@ namespace Praca_Inzynierska.Migrations
                     b.ToTable("Comments");
                 });
 
-            modelBuilder.Entity("Praca_Inzynierska.Models.ImageActor", b =>
-                {
-                    b.Property<int>("ImageId")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("ActorId");
-
-                    b.Property<string>("FileName");
-
-                    b.HasKey("ImageId");
-
-                    b.HasIndex("ActorId");
-
-                    b.ToTable("ActorImages");
-                });
-
             modelBuilder.Entity("Praca_Inzynierska.Models.ImageMovie", b =>
                 {
                     b.Property<int>("ImageId")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("ActorId");
-
                     b.Property<string>("FileName");
 
                     b.Property<int?>("MovieId");
 
                     b.HasKey("ImageId");
-
-                    b.HasIndex("ActorId");
 
                     b.HasIndex("MovieId");
 
@@ -382,19 +363,8 @@ namespace Praca_Inzynierska.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Praca_Inzynierska.Models.ImageActor", b =>
-                {
-                    b.HasOne("Praca_Inzynierska.Models.Actor", "Actor")
-                        .WithMany()
-                        .HasForeignKey("ActorId");
-                });
-
             modelBuilder.Entity("Praca_Inzynierska.Models.ImageMovie", b =>
                 {
-                    b.HasOne("Praca_Inzynierska.Models.Actor")
-                        .WithMany("Images")
-                        .HasForeignKey("ActorId");
-
                     b.HasOne("Praca_Inzynierska.Models.Movie", "Movie")
                         .WithMany("Images")
                         .HasForeignKey("MovieId");

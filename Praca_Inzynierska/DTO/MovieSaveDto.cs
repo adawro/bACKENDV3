@@ -14,7 +14,8 @@ namespace Praca_Inzynierska.DTO
         public string WrittenBy { get; set; }
         public string Country { get; set; }
         public int BoxOffice { get; set; }
-        public List<ActorAddToMovie> Actors { get; set; }
+        public IEnumerable<int> ActorId { get; set; }
+        public IEnumerable<string> ActorName { get; set; }
         public IEnumerable<IFormFile> Images { get; set; }
     }
 }

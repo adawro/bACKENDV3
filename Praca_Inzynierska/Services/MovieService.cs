@@ -67,16 +67,31 @@ namespace Praca_Inzynierska.Services
             movieSave.Type = type;
 
             List<MovieToActors> actorListSave = new List<MovieToActors>();
-
+            int i = 0;
             List<ActorInFilm> actorListReturn = new List<ActorInFilm>();
+            List<ActorAddToMovie> Actors = new List<ActorAddToMovie>();
+            foreach (var e in movie.ActorId)
+            {
+                
+                Actor tmp = _context.Actors.FirstOrDefault(a => a.ActorId == e);
+                
+                var actorarray = movie.ActorName.ToArray();
+                var tmpp = new ActorAddToMovie
+                {
+                    ActorId = e,
+                    NameInFilm = actorarray[i]
+                };
+                i++;
+                Actors.Add(tmpp);
+            }
 
-            if(movie.Actors == null)
+            if(Actors == null)
             {
                 errors.Add("Actors", new[] { "Lista aktorów nie może być pusta" });
                 return new MovieResponse(errors);
             }
 
-            foreach (var e in movie.Actors)
+            foreach (var e in Actors)
             {
                 Actor tmp = _context.Actors.FirstOrDefault(a => a.ActorId == e.ActorId);
                 if (tmp == null)
@@ -96,7 +111,7 @@ namespace Praca_Inzynierska.Services
                 actorListReturn.Add(actorInFilm);
             }
 
-            if (errors == null)
+            if (errors.Count() != 0)
             {
                 return new MovieResponse(errors);
             }
@@ -212,8 +227,8 @@ namespace Praca_Inzynierska.Services
                 };
                 actorListReturn.Add(actorInFilm);
             }
-            
-            if (errors == null)
+
+            if (errors.Count() != 0)
             {
                 return new MovieResponse(errors);
             }

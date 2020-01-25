@@ -21,7 +21,7 @@ namespace Praca_Inzynierska.Extensions
 {
     public static class StartupExtensions
     {
-        // TODO: jesli juz by bylo gdzies na serwerze, ograniczyc odpowiednio dostep
+      
         public static void AddCorsPolicy(this IServiceCollection services, string policyName)
         {
             services.AddCors(options =>
@@ -35,7 +35,7 @@ namespace Praca_Inzynierska.Extensions
         }
 
 
-        // TODO: jesli juz by bylo gdzies na serwerze, zastanawic sie nad poprawa
+     
         public static void AddJwtAuthentication(this IServiceCollection services, IConfiguration config)
         {
             services.AddAuthentication(x =>

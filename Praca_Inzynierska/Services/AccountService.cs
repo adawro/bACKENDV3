@@ -70,7 +70,7 @@ namespace Praca_Inzynierska.Services
 
             var result = await _userManager.CreateAsync(user, model.Password);
 
-            string rola = "moderator";
+            string rola = "user";
 
             user.Rola = rola;
             if (!result.Succeeded)
@@ -308,10 +308,10 @@ namespace Praca_Inzynierska.Services
         public async Task<AccountResponse> RegisterModAccountAsync(RegisterAccountDto model)
         {
             Dictionary<string, string[]> errors = new Dictionary<string, string[]>();
+            UserAccount UserAdmin = _context.Users.FirstOrDefault(e => e.Email == _userName || e.UserName == _userName);
+            UserAccount userr = _context.Users.FirstOrDefault(e => e.Email == model.Email || e.UserName == model.UserName);
 
-            UserAccount userr = _context.Users.FirstOrDefault(e => e.Email == model.Email);
-
-            if(userr.Rola !="admin")
+            if(UserAdmin.Rola !="admin" && UserAdmin.Rola != "moderator")
             {
                 errors.Add("Rola", new[] { "NIe masz tutaj dostępu" });
                 return new AccountResponse(errors);

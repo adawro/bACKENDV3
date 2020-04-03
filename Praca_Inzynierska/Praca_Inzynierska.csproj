@@ -3,7 +3,10 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
-    <StartupObject></StartupObject>
+    <StartupObject>Praca_Inzynierska.Program</StartupObject>
+    <ApplicationIcon />
+    <Win32Resource />
+    <OutputType>WinExe</OutputType>
   </PropertyGroup>
 
   <ItemGroup>

@@ -64,7 +64,7 @@ namespace Praca_Inzynierska.Extensions
         public static void AddSqlServerContext(this IServiceCollection services, IConfiguration config)
         {
             services.AddDbContext<AppDbContext>(options =>
-                options.UseSqlServer(config.GetConnectionString("Praca_Inzynierskaa")));
+                options.UseSqlServer(config.GetConnectionString("value")));
         }
         public static void AddCustomMvc(this IServiceCollection services)
         {

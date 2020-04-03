@@ -24,7 +24,7 @@ namespace Praca_Inzynierska.Controllers
 
         /// <summary>
         ///     Tworzy nowe konto.
-        /// </summary>
+        /// </summary> 
         /// <returns>Obiekt json z tokenem jwt</returns>
         /// <response code="200"> 
         ///     JWT - jesli udalo sie zalozyc konto
